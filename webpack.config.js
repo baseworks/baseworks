@@ -21,6 +21,13 @@ const config = {
     rules: [
         { test: /\.html$/, loader: 'html-loader'},
         { test: /\.css$/, loader: "style!css" },
+    ],
+    loaders: [
+      {
+        test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'babel-loader?presets[]=env'
+      }
     ]
   },
   devServer: {
