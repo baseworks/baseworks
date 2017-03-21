@@ -12,8 +12,17 @@ git clone https://github.com/baseworks/baseworks.git
 ```
 npm install
 ```
-5. From the project folder to launch the example code:
+5. Set your NODE_PATH environment variable to ./src so require can resolve relative paths.
+### Windows
+```
+SET NODE_PATH=.\src
+```
+##3 Linux
+```
+export NODE_PATH=./src
+```
+6. Launch the example code:
 ```
 npm nodemon
 ```
-6. Navigate to http://localhost:9090/
+7. Navigate to http://localhost:9090/
