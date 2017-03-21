@@ -25,14 +25,14 @@ export class Loader {
             }
             let item = new module[key]()
             let id = this.modules.length;
-            let config = {moduleId: moduleId, view: view, id: id, viewModel: item}
+            let content = {moduleId: moduleId, view: view, id: id, viewModel: item}
             if ('loadRouter' in item && 'router' in this) {
               this.router.load(moduleId, item.loadRouter())
             }
-            this.modules.push(config)
-            console.debug("Loaded module: " + moduleId + ".js" + (config.view ? " and " + moduleId + ".html" : ""))
+            this.modules.push(content)
+            console.debug("Loaded module: " + moduleId + ".js" + (content.view ? " and " + moduleId + ".html" : ""))
 
-            return Promise.resolve(config);
+            return Promise.resolve(content);
           }
         }
       }

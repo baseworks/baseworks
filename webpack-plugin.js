@@ -2,7 +2,7 @@ const path = require('path');
 class ResolveWebpackPlugin {
   constructor(options = {}) {
     options.root = path.dirname(module.parent.filename);
-    options.source = path.resolve(options.root, "src");
+    options.source = path.resolve(options.root, "example/src");
     this.options = options;
   }
 

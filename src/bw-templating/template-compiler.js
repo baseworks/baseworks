@@ -1,41 +1,8 @@
-import { Parser } from './parser';
-
-export class BindingContext {
-  constructor(expression, context, element, attribute) {
-    this.expression = expression;
-    this.value;
-    this.element = element;
-    this.attribute = attribute;
-    this.context = context;
-  }
-  assign(value) {
-    if ('assign' in this.expression)
-      this.expression.assign(value)
-  }
-  evaluate() {
-    return this.expression.evaluate(this.context);
-  }
-
-  observe() {
-    // need to have multiple observers
-    if ('observe' in this.expression)
-      return this.expression.observe(this, this.context);
-  }
-
-  update(newValue) {
-    if (this.attribute === "textContent")
-      this.element[this.attribute] = newValue;
-    else
-      this.element.setAttribute(this.attribute, newValue);
-  }
-}
-
-export class BindingService {
+import { BindingCollection, BindingContext, BindingObserver, Parser } from 'bw-binding';
+export class TemplateCompiler {
   constructor() {
     this.parser = new Parser();
-  }
-  bindView(context, view) {
-    this.processNode(context, view)
+    this.bindings = new BindingCollection();
   }
 
   processNode(context, node) {
@@ -71,12 +38,15 @@ export class BindingService {
             }
             if (curly === 0 && quote === null && length > 0) {
               let r = text.substring(0, length)
-              let binding = new BindingContext(this.parser.parse(r), context, node, "textContent");
-              binding.observe();
+              let expression = this.parser.parse(r);
+              let binding = this.bindings.find(expression, context)
+              if (!binding)
+                binding = this.bindings.add(new BindingContext(expression, context));
+              binding.addObserver(new BindingObserver(node, "textContent"));
               let value = binding.evaluate();
-
               if (value !== undefined) {
                 node.textContent = node.textContent.replace("${" + r + "}", value);
+                node.parentNode.setAttribute("text-content:bind", r);
               }
             }
           }
@@ -88,12 +58,21 @@ export class BindingService {
       for (let a of node.attributes) {
         let bindingAttr = a.name.split(':')
         if (bindingAttr.length > 1) {
-          let attr = bindingAttr[0];
+          let attr = bindingAttr[0].toCamel();
           let method = bindingAttr[1];
           let expr = a.value;
-          let binding = new BindingContext(this.parser.parse(expr), context, node, method);
-          binding.observe();
-          node.setAttribute(attr, binding.evaluate(context))
+          let expression = this.parser.parse(expr);
+          let binding = this.bindings.find(expression, context)
+
+          if (!binding)
+            binding = this.bindings.add(new BindingContext(expression, context));
+
+          binding.addObserver(new BindingObserver(node, attr));
+          if (attr === "value" || attr === "textContent")
+            node[attr] = binding.evaluate(context)
+          else
+            node.setAttribute(attr, binding.evaluate(context));
+
           if (node.tagName.toLowerCase() === "input") {
             let listener = e => {
               binding.assign(node.value)
@@ -110,4 +89,10 @@ export class BindingService {
       }
     }
   }
+
+}
+if (typeof String.prototype.toCamel !== 'function') {
+  String.prototype.toCamel = function(){
+    return this.replace(/[-]([a-z])/g, function (g) { return g[1].toUpperCase(); })
+  };
 }

@@ -19,12 +19,14 @@
   <div class="mdl-layout__drawer">
     <span class="mdl-layout-title">Router Sample</span>
     <nav class="mdl-navigation">
-      <a class="mdl-navigation__link" href="home/1234">Home</a>
+      <a class="mdl-navigation__link" href="/">Index</a>
+      <a class="mdl-navigation__link" href="/home/1234">home</a>
     </nav>
   </div>
   <main class="mdl-layout__content mdl-color--grey-100">
     <h1>Index</h1>
-    <p css:bind="test"></p>
+    <p>${test}</p>
+    <input value:bind="test" value="haha">
     <div class="page-content">
       <view router class="mdl-grid"></view>
     </div>
