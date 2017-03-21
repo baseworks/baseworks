@@ -6,7 +6,7 @@ Baseworks is a full stack web application framework built with JavaScript.
 1. Make sure you have [NodeJS](http://nodejs.org/) installed.
 2. Download this repo from Github.
 ```
-git checkout https://github.com/baseworks/baseworks.git
+git clone https://github.com/baseworks/baseworks.git
 ```
 4. Within the project folder using command line:
 ```
