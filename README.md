@@ -17,12 +17,12 @@ npm install
 ```
 SET NODE_PATH=.\src
 ```
-##3 Linux
+### Linux
 ```
 export NODE_PATH=./src
 ```
 6. Launch the example code:
 ```
-npm nodemon
+npm start nodemon
 ```
 7. Navigate to http://localhost:9090/
