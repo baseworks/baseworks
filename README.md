@@ -23,6 +23,6 @@ export NODE_PATH=./src
 ```
 6. Launch the example code:
 ```
-npm start nodemon
+npm run nodemon
 ```
 7. Navigate to http://localhost:9090/
