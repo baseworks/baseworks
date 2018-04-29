@@ -4,6 +4,7 @@ import { Router } from './router';
 import { Loader, FileLoader } from 'bw-node-loader';
 import { TemplateCompiler } from 'bw-templating';
 import { Container, depend } from 'bw-dependency-injection'
+import { JSDOM } from 'jsdom';
 /*
 
 class Awesome {
@@ -52,20 +53,18 @@ export class App {
   createView() {
     //need to create initial DOM.
     //boot strapping loads the app html
-    let path = this.options.root;
-    return this.loader.load(path + "/index")
+    let path = `${this.options.root}/index`;
+    return this.loader.load({path, fragment: false})
     .then(content => {
-      this.document = content.view
+      this.DOM = content.view;
+      this.document = this.DOM.window.document;
       this.element = this.document.querySelectorAll('[attach-app]')[0];
-      path = this.options.root + this.options.src;
-      return this.loader.load(path + "/index", true)
+      path = `${this.options.root}${this.options.src}/index`;
+      return this.loader.load({path, loadViewModal: true})
       .then(subContent => {
         let div = this.document.createElement('div');
-        div.setAttribute("bw-view", "0")
-        for (let i=0, c = subContent.view.childNodes, l = c.length; i < l; i++) {
-          div.append(c[i]);
-        }
-        //div.appendChild(subContent.view);
+        div.setAttribute("bw-view", "0");
+        div.appendChild(subContent.view);
         this.element.appendChild(div);
         this.templateCompiler.processNode(subContent.viewModel, this.element);
       })
@@ -78,25 +77,23 @@ export class App {
   }
 
   handleRequests(request, response) {
-    let route = this.router.findRoute(request.url)
+    let route = this.router.findRoute(request.url);
     if (request.url === '/') {
       response.statusCode = 200;
-      response.end(this.document.html(this.document));
-      return;
+      response.end(this.DOM.serialize());
     } else if (route.route) {
-      let path = this.options.root + this.options.src + '/' + route.route.view
-      this.loader.load(path, true)
+      let path = `${this.options.root}${this.options.src}/${route.route.view}`;
+      this.loader.load({path, loadViewModal: true})
       .then(content => {
         let element = this.document.querySelectorAll('view')[0];
-        element.childNodes = [];
+        console.log(element);
         let div = this.document.createElement('div');
-        for (let i=0, c = content.view.childNodes, l = c.length; i < l; i++) {
-          div.append(c[i]);
-        }
+        div.appendChild(content.view);
         this.templateCompiler.processNode(content.viewModel, div);
-        element.appendChild(div)
+        element.innerHTML = "";
+        element.appendChild(div);
         response.statusCode = 200;
-        response.end(this.document.html(this.document));
+        response.end(this.DOM.serialize());
       })
       .catch(error => {
         console.log(error)
@@ -106,7 +103,7 @@ export class App {
     }
 
     else if (new RegExp('^' + this.options.staticFiles).test(request.url)) {
-      let path = this.options.root + request.url
+      let path = `${this.options.root}${request.url}`;
       this.fileLoader.load(path)
       .then(data => {
         response.statusCode = 200;
