@@ -39,6 +39,8 @@ export class Router extends BaseRouter {
 
        */
        target.innerHTML = "";
+       if (pushState)
+         this.history.pushState({route: route, url: url}, "", url);
     } else if (route) {
       this.loader.load(route.view)
       .then(content => {

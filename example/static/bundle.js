@@ -6,9 +6,9 @@
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -68,11 +68,11 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "..\\..\\src\\bw-binding\\binding.js":
+/***/ "../../src/bw-binding/binding.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bw_templating__ = __webpack_require__("..\\..\\src\\bw-templating\\index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bw_templating__ = __webpack_require__("../../src/bw-templating/index.js");
 
 
 class BindingCollection {
@@ -147,16 +147,16 @@ class BindingService {
 
 /***/ }),
 
-/***/ "..\\..\\src\\bw-binding\\index.js":
+/***/ "../../src/bw-binding/index.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__binding__ = __webpack_require__("..\\..\\src\\bw-binding\\binding.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__binding__ = __webpack_require__("../../src/bw-binding/binding.js");
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__binding__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_0__binding__["b"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_0__binding__["c"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_0__binding__["d"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__parser__ = __webpack_require__("..\\..\\src\\bw-binding\\parser.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__parser__ = __webpack_require__("../../src/bw-binding/parser.js");
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__parser__["a"]; });
 
 
@@ -164,11 +164,11 @@ class BindingService {
 
 /***/ }),
 
-/***/ "..\\..\\src\\bw-binding\\parser.js":
+/***/ "../../src/bw-binding/parser.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tokenizer__ = __webpack_require__("..\\..\\src\\bw-binding\\tokenizer.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tokenizer__ = __webpack_require__("../../src/bw-binding/tokenizer.js");
 
 
 class Parser {
@@ -511,7 +511,7 @@ class ConditionalExpression {
 
 /***/ }),
 
-/***/ "..\\..\\src\\bw-binding\\tokenizer.js":
+/***/ "../../src/bw-binding/tokenizer.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1063,12 +1063,12 @@ const quoteCharacterCodes = [
 
 /***/ }),
 
-/***/ "..\\..\\src\\bw-client-router\\index.js":
+/***/ "../../src/bw-client-router/index.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bw_router__ = __webpack_require__("..\\..\\src\\bw-router\\index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_bw_binding__ = __webpack_require__("..\\..\\src\\bw-binding\\index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bw_router__ = __webpack_require__("../../src/bw-router/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_bw_binding__ = __webpack_require__("../../src/bw-binding/index.js");
 
 
 class Router extends __WEBPACK_IMPORTED_MODULE_0_bw_router__["a" /* BaseRouter */] {
@@ -1110,6 +1110,8 @@ class Router extends __WEBPACK_IMPORTED_MODULE_0_bw_router__["a" /* BaseRouter *
 
        */
        target.innerHTML = "";
+       if (pushState)
+         this.history.pushState({route: route, url: url}, "", url);
     } else if (route) {
       this.loader.load(route.view)
       .then(content => {
@@ -1168,14 +1170,14 @@ class Router extends __WEBPACK_IMPORTED_MODULE_0_bw_router__["a" /* BaseRouter *
 
 /***/ }),
 
-/***/ "..\\..\\src\\bw-initialize\\index.js":
+/***/ "../../src/bw-initialize/index.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bw_webpack_loader__ = __webpack_require__("..\\..\\src\\bw-webpack-loader\\index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_bw_client_router__ = __webpack_require__("..\\..\\src\\bw-client-router\\index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bw_binding__ = __webpack_require__("..\\..\\src\\bw-binding\\index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bw_webpack_loader__ = __webpack_require__("../../src/bw-webpack-loader/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_bw_client_router__ = __webpack_require__("../../src/bw-client-router/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bw_binding__ = __webpack_require__("../../src/bw-binding/index.js");
 
 
 
@@ -1249,7 +1251,7 @@ class Main {
 
 /***/ }),
 
-/***/ "..\\..\\src\\bw-router\\index.js":
+/***/ "../../src/bw-router/index.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1325,22 +1327,22 @@ function route(...items) {
 
 /***/ }),
 
-/***/ "..\\..\\src\\bw-templating\\index.js":
+/***/ "../../src/bw-templating/index.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__template_compiler__ = __webpack_require__("..\\..\\src\\bw-templating\\template-compiler.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__template_compiler__ = __webpack_require__("../../src/bw-templating/template-compiler.js");
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__template_compiler__["a"]; });
 
 
 
 /***/ }),
 
-/***/ "..\\..\\src\\bw-templating\\template-compiler.js":
+/***/ "../../src/bw-templating/template-compiler.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bw_binding__ = __webpack_require__("..\\..\\src\\bw-binding\\index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bw_binding__ = __webpack_require__("../../src/bw-binding/index.js");
 
 class TemplateCompiler {
   constructor() {
@@ -1445,7 +1447,7 @@ if (typeof String.prototype.toCamel !== 'function') {
 
 /***/ }),
 
-/***/ "..\\..\\src\\bw-webpack-loader\\index.js":
+/***/ "../../src/bw-webpack-loader/index.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1455,17 +1457,18 @@ class Loader {
   }
 
   load(moduleId) {
-    let found = this.modules.filter(i => i.moduleId === moduleId)[0]
-    console.log(__webpack_require__.m)
+    console.log(moduleId);
+    let found = this.modules.filter(i => i.moduleId === moduleId)[0];
+    console.log(__webpack_require__.m);
     if (found) {
       return Promise.resolve(found);
     }
 
     else if (__webpack_require__.m[moduleId + '.js']) {
-      let module = __webpack_require__(moduleId + ".js")
+      let module = __webpack_require__(moduleId + ".js");
       if (typeof module === 'object') {
         for (let key in module) {
-          let exported = module[key]
+          let exported = module[key];
           if (typeof exported === "function") {
             let view;
             if (__webpack_require__.m[moduleId + '.html']) {
@@ -1474,14 +1477,14 @@ class Loader {
               //template.innerHTML = html;
               //view = template.firstElementChild;
             }
-            let item = new module[key]()
+            let item = new module[key]();
             let id = this.modules.length;
-            let content = {moduleId: moduleId, view: view, id: id, viewModel: item}
+            let content = {moduleId: moduleId, view: view, id: id, viewModel: item};
             if ('loadRouter' in item && 'router' in this) {
               this.router.load(moduleId, item.loadRouter())
             }
-            this.modules.push(content)
-            console.debug("Loaded module: " + moduleId + ".js" + (content.view ? " and " + moduleId + ".html" : ""))
+            this.modules.push(content);
+            console.debug("Loaded module: " + moduleId + ".js" + (content.view ? " and " + moduleId + ".html" : ""));
 
             return Promise.resolve(content);
           }
@@ -1516,7 +1519,7 @@ function webpackContext(req) {
 };
 function webpackContextResolve(req) {
 	var id = map[req];
-	if(!(id + 1)) // check for number
+	if(!(id + 1)) // check for number or string
 		throw new Error("Cannot find module '" + req + "'.");
 	return id;
 };
@@ -1527,13 +1530,12 @@ webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
 webpackContext.id = 4;
 
-
 /***/ }),
 
 /***/ "home.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"mdl-cell mdl-cell--12-col\">\r\n  <h1>${input}</h1>\r\n  <input value:bind=\"input\">\r\n</div>\r\n";
+module.exports = "<div class=\"mdl-cell mdl-cell--12-col\">\n  <h1>${input}</h1>\n  <input value:bind=\"input\">\n</div>\n";
 
 /***/ }),
 
@@ -1572,7 +1574,7 @@ class Test {
 /***/ "index.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"mdl-layout mdl-js-layout mdl-layout--fixed-drawer\r\n            mdl-layout--fixed-header\">\r\n  <header class=\"mdl-layout__header\">\r\n    <div class=\"mdl-layout__header-row\">\r\n      <div class=\"mdl-layout-spacer\"></div>\r\n      <div class=\"mdl-textfield mdl-js-textfield mdl-textfield--expandable\r\n                  mdl-textfield--floating-label mdl-textfield--align-right\">\r\n        <label class=\"mdl-button mdl-js-button mdl-button--icon\"\r\n               for=\"fixed-header-drawer-exp\">\r\n          <i class=\"material-icons\">search</i>\r\n        </label>\r\n        <div class=\"mdl-textfield__expandable-holder\">\r\n          <input class=\"mdl-textfield__input\" type=\"text\" name=\"sample\"\r\n                 id=\"fixed-header-drawer-exp\">\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </header>\r\n  <div class=\"mdl-layout__drawer\">\r\n    <span class=\"mdl-layout-title\">Router Sample</span>\r\n    <nav class=\"mdl-navigation\">\r\n      <a class=\"mdl-navigation__link\" href=\"/\">Index</a>\r\n      <a class=\"mdl-navigation__link\" href=\"/home/1234\">home</a>\r\n    </nav>\r\n  </div>\r\n  <main class=\"mdl-layout__content mdl-color--grey-100\">\r\n    <h1>Index</h1>\r\n    <p>${test}</p>\r\n    <input value:bind=\"test\" value=\"haha\">\r\n    <div class=\"page-content\">\r\n      <view router class=\"mdl-grid\"></view>\r\n    </div>\r\n  </main>\r\n</div>\r\n";
+module.exports = "<div class=\"mdl-layout mdl-js-layout mdl-layout--fixed-drawer\n            mdl-layout--fixed-header\">\n  <header class=\"mdl-layout__header\">\n    <div class=\"mdl-layout__header-row\">\n      <div class=\"mdl-layout-spacer\"></div>\n      <div class=\"mdl-textfield mdl-js-textfield mdl-textfield--expandable\n                  mdl-textfield--floating-label mdl-textfield--align-right\">\n        <label class=\"mdl-button mdl-js-button mdl-button--icon\"\n               for=\"fixed-header-drawer-exp\">\n          <i class=\"material-icons\">search</i>\n        </label>\n        <div class=\"mdl-textfield__expandable-holder\">\n          <input class=\"mdl-textfield__input\" type=\"text\" name=\"sample\"\n                 id=\"fixed-header-drawer-exp\">\n        </div>\n      </div>\n    </div>\n  </header>\n  <div class=\"mdl-layout__drawer\">\n    <span class=\"mdl-layout-title\">Router Sample</span>\n    <nav class=\"mdl-navigation\">\n      <a class=\"mdl-navigation__link\" href=\"/\">Index</a>\n      <a class=\"mdl-navigation__link\" href=\"/home/1234\">home</a>\n    </nav>\n  </div>\n  <main class=\"mdl-layout__content mdl-color--grey-100\">\n    <h1>Index</h1>\n    <p>${test}</p>\n    <input value:bind=\"test\" value=\"haha\">\n    <div class=\"page-content\">\n      <view router class=\"mdl-grid\"></view>\n    </div>\n  </main>\n</div>\n";
 
 /***/ }),
 
@@ -1588,7 +1590,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 class Index {
   constructor() {
-    this.test = "wooop"
+    this.test = "wooop";
+    window.baseworks = this;
   }
 
   loadRouter() {
@@ -1608,7 +1611,7 @@ class Index {
 /***/ "main.js":
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__("..\\..\\src\\bw-initialize\\index.js");
+__webpack_require__("../../src/bw-initialize/index.js");
 __webpack_require__(4); //loads all files in the src folder.
 
 

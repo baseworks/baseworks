@@ -34,6 +34,8 @@ class Router extends BaseRouter {
     let {params, route} = this.findRoute(url.split("?")[0])
      if (url === '/') {
        let target = this.element.querySelectorAll("view[router]")[0];
+       if (pushState)
+          this.history.pushState({route: route, url: url}, "", url);
        /*
        need a better method to handling the base route.
 
