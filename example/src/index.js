@@ -5,7 +5,8 @@
 
 export class Index {
   constructor() {
-    this.test = "wooop"
+    this.test = "wooop";
+    window.baseworks = this;
   }
 
   loadRouter() {

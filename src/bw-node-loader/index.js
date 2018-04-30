@@ -1,19 +1,18 @@
 import * as fs from 'fs';
-import { HtmlParser } from 'bw-node-dom';
-
+import { JSDOM } from 'jsdom';
+global.window = {};
 export class Loader {
 
   constructor() {
     this.modules = []
-    this.htmlParser = new HtmlParser();
   }
 
-  load(path, loadViewModal = false) {
+  load({path, loadViewModal = false, fragment = true}) {
     let file = path + ".html";
     return isFile(file).then(() => {
       return readFile(file).then(data => {
-        let view = this.htmlParser.parse(data);
-        let content = {moduleId: path, view: view}
+        let view = fragment ? JSDOM.fragment(data).firstChild : new JSDOM(data);
+        let content = {moduleId: path, view};
         let promise = loadViewModal ? isFile(path + ".js").then() : Promise.resolve()
         return promise.then(() => {
           if (loadViewModal) {
