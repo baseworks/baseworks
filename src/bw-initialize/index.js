@@ -1,5 +1,8 @@
-import { Loader } from 'bw-webpack-loader'
+import { WebpackLoader } from 'bw-webpack-loader'
+import { Loader } from 'bw-loader'
 import { Router } from 'bw-client-router'
+import {TemplateCompiler} from "bw-templating";
+import {Container} from "bw-dependency-injection";
 import { BindingService } from 'bw-binding';
 
 class Bootstrapper {
@@ -38,11 +41,13 @@ bootstrap.ensureLoaded()
 
 export class Main {
   constructor() {
-
+    this.container = new Container();
+    this.container.registerAlias(Loader, WebpackLoader);
     this.element = document.querySelectorAll('body')[0];
-    console.log(this.element);
-    this.loader = new Loader();
-    this.router = new Router(this.loader, this.element);
+    this.templateCompiler = this.container.resolve(TemplateCompiler);
+
+    this.loader = this.container.resolve(Loader);
+    this.router = new Router(this.loader, this.templateCompiler, this.element);
     this.loader.router = this.router;
     this.createView(); // should the router just navigate to '/' instead?
   }

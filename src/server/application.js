@@ -1,10 +1,12 @@
 import * as http from 'http';
 import * as path from 'path';
 import { Router } from './router';
-import { Loader, FileLoader } from 'bw-node-loader';
+import { NodeLoader, FileLoader } from 'bw-node-loader';
+import { Loader } from 'bw-loader';
 import { TemplateCompiler } from 'bw-templating';
 import { Container, depend } from 'bw-dependency-injection'
 import { JSDOM } from 'jsdom';
+global.window = {}
 /*
 
 class Awesome {
@@ -29,13 +31,17 @@ export class Again {
 
 export class App {
   constructor() {
-    this.router = new Router();
-    this.router.url = '/'
-    this.loader = new Loader();
+       window.BaseWorks = this;
+       this.container = new Container();
+       this.container.registerAlias(Loader, NodeLoader);
+    this.router = this.container.resolve(Router);
+    this.router.url = '/';
+
+    this.loader = this.container.resolve(Loader);
     this.loader.router = this.router;
     this.fileLoader = new FileLoader();
-    this.templateCompiler = new TemplateCompiler()
-    this.container = new Container();
+    this.templateCompiler = this.container.resolve(TemplateCompiler);
+
     //this.test = this.container.resolve(Test)
     //this.again = this.container.resolve(Again)
     //this.htmlParser.parse( path.resolve(__dirname, '../../example/src') + '/index.html')
