@@ -1,3 +1,5 @@
+import {UnknownTag} from "./unknown-tag";
+
 export class Test {
   constructor() {
     this.message = "Home"
@@ -7,7 +9,7 @@ export class Test {
     this.test = {"test": {"sub": "Tester"}}
     this.testTwo= {"test": {"test": {"sub": "deep"}}}
     this.testStrigng = "test";
-
+    this.unknownTag = new UnknownTag();
 
   }
 
