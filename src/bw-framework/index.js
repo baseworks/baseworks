@@ -5,9 +5,6 @@ export class Framework {
     this.element = document.querySelectorAll('body')[0];
     this.container = new Container();
 
-    this.loader = new Loader();
-    this.router = new Router(this.loader, this.element);
-    this.loader.router = this.router;
     this.createView(); // should the router just navigate to '/' instead?
   }
 

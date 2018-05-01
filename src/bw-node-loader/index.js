@@ -1,12 +1,14 @@
 import * as fs from 'fs';
 import { JSDOM } from 'jsdom';
 global.window = {};
-export class Loader {
+export class NodeLoader {
 
   constructor() {
     this.modules = []
   }
-
+  findView() {
+    return null;
+  }
   load({path, loadViewModal = false, fragment = true}) {
     let file = path + ".html";
     return isFile(file).then(() => {
