@@ -52,9 +52,9 @@ export class BindingContext {
 }
 
 export class BindingService {
-  constructor() {
+  constructor(templateCompiler) {
     this.bindings = new BindingCollection();
-    this.templateCompiler = new TemplateCompiler();
+    this.templateCompiler = templateCompiler;
   }
   bindView(context, view) {
     this.templateCompiler.processNode(context, view)
