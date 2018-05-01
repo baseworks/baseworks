@@ -1,10 +1,10 @@
 import { BaseRouter } from 'bw-router';
 import { BindingService } from 'bw-binding';
 export class Router extends BaseRouter {
-  constructor(loader, element) {
+  constructor(loader, templateCompiler, element) {
     super(loader);
     this.currentState = {route: {pattern: "/", parent: null, view: "index"}, url: "/"};
-    this.binding = new BindingService();
+    this.binding = new BindingService(templateCompiler);
     this.history = window.history;
     this.element = element;
     this.loader = loader;
