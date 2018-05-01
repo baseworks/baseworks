@@ -33,9 +33,6 @@
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -45,6 +42,11 @@
 /******/ 				get: getter
 /******/ 			});
 /******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -62,6 +64,7 @@
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
 /******/
+/******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = "main.js");
 /******/ })
@@ -69,1551 +72,250 @@
 /******/ ({
 
 /***/ "../../src/bw-binding/binding.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*!***********************************!*\
+  !*** ./src/bw-binding/binding.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bw_templating__ = __webpack_require__("../../src/bw-templating/index.js");
-
-
-class BindingCollection {
-  constructor() {
-    this.bindings = [];
-  }
-  add(binding) {
-    this.bindings.push(binding)
-    return binding;
-  }
-  find(expression, context) {
-    let binding = this.bindings.filter(i => i.expression.text === expression.text && i.context === context)
-    return binding.length > 0 ? binding[0] : false;
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["b"] = BindingCollection;
-
-class BindingObserver {
-  constructor(element, attribute) {
-    this.element = element;
-    this.attribute = attribute;
-  }
-  update(newValue) {
-    this.element[this.attribute] = newValue;
-    //if (this.attribute === "textContent" || this.attribute === "value")
-    //else
-      //this.element.setAttribute(this.attribute, newValue);
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["c"] = BindingObserver;
-
-
-class BindingContext {
-  constructor(expression, context) {
-    this.expression = expression;
-    this.observers = []
-    this.context = context;
-    if ('observe' in this.expression)
-      this.expression.observe(this, this.context);
-  }
-  assign(value) {
-    if ('assign' in this.expression)
-      this.expression.assign(value)
-  }
-  evaluate() {
-    return this.expression.evaluate(this.context);
-  }
-
-  addObserver(observer) {
-    this.observers.push(observer)
-  }
-
-  update(newValue) {
-    this.observers.forEach( observer => { observer.update(newValue); })
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["d"] = BindingContext;
-
-
-class BindingService {
-  constructor() {
-    this.bindings = new BindingCollection();
-    this.templateCompiler = new __WEBPACK_IMPORTED_MODULE_0_bw_templating__["a" /* TemplateCompiler */]();
-  }
-  bindView(context, view) {
-    this.templateCompiler.processNode(context, view)
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = BindingService;
-
-
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.BindingService = exports.BindingContext = exports.BindingObserver = exports.BindingCollection = undefined;\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _bwTemplating = __webpack_require__(/*! bw-templating */ \"../../src/bw-templating/index.js\");\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar BindingCollection = exports.BindingCollection = function () {\n  function BindingCollection() {\n    _classCallCheck(this, BindingCollection);\n\n    this.bindings = [];\n  }\n\n  _createClass(BindingCollection, [{\n    key: 'add',\n    value: function add(binding) {\n      this.bindings.push(binding);\n      return binding;\n    }\n  }, {\n    key: 'find',\n    value: function find(expression, context) {\n      var binding = this.bindings.filter(function (i) {\n        return i.expression.text === expression.text && i.context === context;\n      });\n      return binding.length > 0 ? binding[0] : false;\n    }\n  }]);\n\n  return BindingCollection;\n}();\n\nvar BindingObserver = exports.BindingObserver = function () {\n  function BindingObserver(element, attribute) {\n    _classCallCheck(this, BindingObserver);\n\n    this.element = element;\n    this.attribute = attribute;\n  }\n\n  _createClass(BindingObserver, [{\n    key: 'update',\n    value: function update(newValue) {\n      this.element[this.attribute] = newValue;\n      //if (this.attribute === \"textContent\" || this.attribute === \"value\")\n      //else\n      //this.element.setAttribute(this.attribute, newValue);\n    }\n  }]);\n\n  return BindingObserver;\n}();\n\nvar BindingContext = exports.BindingContext = function () {\n  function BindingContext(expression, context) {\n    _classCallCheck(this, BindingContext);\n\n    this.expression = expression;\n    this.observers = [];\n    this.context = context;\n    if ('observe' in this.expression) this.expression.observe(this, this.context);\n  }\n\n  _createClass(BindingContext, [{\n    key: 'assign',\n    value: function assign(value) {\n      if ('assign' in this.expression) this.expression.assign(value);\n    }\n  }, {\n    key: 'evaluate',\n    value: function evaluate() {\n      return this.expression.evaluate(this.context);\n    }\n  }, {\n    key: 'addObserver',\n    value: function addObserver(observer) {\n      this.observers.push(observer);\n    }\n  }, {\n    key: 'update',\n    value: function update(newValue) {\n      this.observers.forEach(function (observer) {\n        observer.update(newValue);\n      });\n    }\n  }]);\n\n  return BindingContext;\n}();\n\nvar BindingService = exports.BindingService = function () {\n  function BindingService(templateCompiler) {\n    _classCallCheck(this, BindingService);\n\n    this.bindings = new BindingCollection();\n    this.templateCompiler = templateCompiler;\n  }\n\n  _createClass(BindingService, [{\n    key: 'bindView',\n    value: function bindView(context, view) {\n      this.templateCompiler.processNode(context, view);\n    }\n  }]);\n\n  return BindingService;\n}();\n\n//# sourceURL=webpack:///./src/bw-binding/binding.js?");
 
 /***/ }),
 
 /***/ "../../src/bw-binding/index.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*!*********************************!*\
+  !*** ./src/bw-binding/index.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__binding__ = __webpack_require__("../../src/bw-binding/binding.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__binding__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_0__binding__["b"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_0__binding__["c"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_0__binding__["d"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__parser__ = __webpack_require__("../../src/bw-binding/parser.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__parser__["a"]; });
-
-
-
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _binding = __webpack_require__(/*! ./binding */ \"../../src/bw-binding/binding.js\");\n\nObject.defineProperty(exports, 'BindingService', {\n  enumerable: true,\n  get: function get() {\n    return _binding.BindingService;\n  }\n});\nObject.defineProperty(exports, 'BindingCollection', {\n  enumerable: true,\n  get: function get() {\n    return _binding.BindingCollection;\n  }\n});\nObject.defineProperty(exports, 'BindingObserver', {\n  enumerable: true,\n  get: function get() {\n    return _binding.BindingObserver;\n  }\n});\nObject.defineProperty(exports, 'BindingContext', {\n  enumerable: true,\n  get: function get() {\n    return _binding.BindingContext;\n  }\n});\n\nvar _parser = __webpack_require__(/*! ./parser */ \"../../src/bw-binding/parser.js\");\n\nObject.defineProperty(exports, 'Parser', {\n  enumerable: true,\n  get: function get() {\n    return _parser.Parser;\n  }\n});\n\n//# sourceURL=webpack:///./src/bw-binding/index.js?");
 
 /***/ }),
 
 /***/ "../../src/bw-binding/parser.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*!**********************************!*\
+  !*** ./src/bw-binding/parser.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tokenizer__ = __webpack_require__("../../src/bw-binding/tokenizer.js");
-
-
-class Parser {
-  constructor() {}
-
-  parse(input) {
-    this.tokenize = new __WEBPACK_IMPORTED_MODULE_0__tokenizer__["a" /* Tokenize */](input);
-    this.token = this.tokenize.next();
-    let result;
-    while (this.token.type !== __WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].eof) {
-      result = this.parseStatement()
-      this.token = this.tokenize.next();
-    }
-
-    return result
-  }
-
-  parseStatement() {
-    let expression = this.parseExpression();
-    return expression;
-  }
-
-  parseExpression() {
-    return this.parseConditional();
-  }
-
-  //handles ? : conditionals;
-  parseConditional() {
-    let expr = this.parseExprOps();
-    if (this.eat(__WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].question)) {
-      let truthy = this.parseExpression();
-      this.expect(__WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].colon)
-      let falsey = this.parseExpression()
-      return new ConditionalExpression(expr, truthy, falsey)
-    }
-    return expr;
-  }
-  parseExprOps() {
-    let expr = this.parseExpressionSubscript();
-    return this.parseExprOp(expr, -1)
-  }
-
-  parseExprOp(left, minPrec) {
-    let prec = this.token.type.binop
-    if (prec !== null && prec > minPrec) {
-      let logical = this.token.type === __WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].logicalOR || this.token.type === __WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].logicalAND;
-      let op = this.token.text;
-      this.advance();
-      let right = this.parseExprOp(this.parseExpressionSubscript(), prec);
-      let expr = new BinaryOperation(left, op, right);
-      return this.parseExprOp(expr, minPrec);
-    }
-
-    return left;
-  }
-
-  // parse call, dot and []
-  parseExpressionSubscript() {
-    let expr = this.parseExprAtom();
-    return this.parseSubscript(expr);
-  }
-
-  parseSubscript(base) {
-    for (let computed;;) {
-      if ((computed = this.eat(__WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].bracketLeft)) || this.eat(__WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].dot)) {
-        let expr = computed ? this.parseExpression() : this.parseSubscript(this.parseIdentifier());
-        if (computed) this.expect(__WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].bracketRight)
-        return new AccessMember(base, expr)
-      }
-      else if (this.eat(__WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].callLeft)) {
-        let args = this.parseExpressionList(__WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].callRight)
-        return new CallMember(base, args)
-      }
-      return base
-    }
-  }
-  parseExprAtom() {
-    //need to account for -true or +false for prefix unary
-    switch (this.token.type) {
-      case __WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].name:
-        return this.parseIdentifier();
-
-      case __WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].number:
-      case __WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].string:
-        let text = this.token.text;
-        this.advance();
-        return new Literal(text);
-
-      case __WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */]._null:
-      case __WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */]._true:
-      case __WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */]._false:
-        let type = this.token.type === __WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */]._null ? null : this.token.type === __WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */]._true;
-        this.advance();
-        return new Literal(type);
-
-      case __WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */]._undefined:
-        this.advance();
-        return new Literal(__WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].undefined);
-
-
-      case __WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].braceLeft:
-        return this.parseObject();
-
-    }
-
-  }
-  parseObject() {
-    let first = true;
-    let keys = [];
-    let values = [];
-    this.advance();
-    while (!this.eat(__WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].braceRight)) {
-      if (!first)
-        this.expect(__WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].comma);
-      else
-        first = false;
-      keys.push(this.parsePropertyName());
-      let value;
-      if (this.eat(__WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].comma) || this.eat(__WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].braceRight))
-        value = this.parseExpression()
-      else {
-        this.expect(__WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].colon)
-        value = this.parseExpression()
-      }
-      values.push(value);
-    }
-    return new ObjectLiteral(keys, values);
-  }
-
-  parsePropertyName() {
-    return this.token.type === __WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].number || this.token.type === __WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].string ? this.parseExpression() : this.parseIdentifier();
-  }
-  parseExpressionList(close) {
-    let result = []
-    let first = true;
-    while (!this.eat(close)) {
-      if (!first)
-        this.expect(__WEBPACK_IMPORTED_MODULE_0__tokenizer__["b" /* tokenType */].comma);
-      else
-        first = false;
-      result.push(this.parseExpression())
-    }
-    return result;
-  }
-  parseIdentifier() {
-    // add in check;
-    let text = this.token.text
-    this.advance();
-    return new Identifier(text);
-  }
-
-  eat(type) {
-    if (this.token.type === type) {
-      this.token = this.tokenize.next();
-      return true;
-    }
-    return false;
-  }
-  advance() {
-    this.token = this.tokenize.next();
-  }
-  expect(type) {
-    this.eat(type) || this.unexpected()
-  }
-
-  unexpected(pos) {
-    throw new Error ("Unexpected token")
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Parser;
-
-
-class BinaryOperation {
-  constructor(left, operation, right) {
-    this.left = left;
-    this.operation = operation;
-    this.right = right;
-  }
-  evaluate(context) {
-    let left = this.left.evaluate(context);
-    let right = this.right.evaluate(context);
-
-    switch (this.operation) {
-      case "&&":
-        return left && right;
-      case "||":
-        return left || right;
-      case "|":
-        return left | right;
-      case "^":
-        return left ^ right;
-      case "&":
-        return left & right;
-      case "===":
-        return left === right;
-      case "==":
-        return left == right;
-      case "!=":
-        return left != right;
-      case "!==":
-        return left !== right;
-      case "<":
-        return left < right;
-      case "<=":
-        return left <= right;
-      case ">":
-        return left > right;
-      case ">=":
-        return left >= right;
-      case "<<":
-        return left << right;
-      case ">>":
-        return left >> right;
-      case "+":
-        return left + right;
-      case "-":
-        return left - right;
-      case "%":
-        return left % right;
-      case "*":
-        return left * right;
-      case "/":
-        return left / right;
-
-    }
-  }
-}
-/* unused harmony export BinaryOperation */
-
-
-class AccessMember {
-  constructor(base, expression) {
-    this.base = base;
-    this.expression = expression;
-  }
-  evaluate(context) {
-    let base = this.base.evaluate(context)
-    let expr = this.expression.evaluate(base);
-    return expr;
-  }
-}
-/* unused harmony export AccessMember */
-
-class CallMember {
-  constructor(callee, args) {
-    this.callee = callee;
-    this.args = args;
-  }
-
-  evaluate(context) {
-    let args = [];
-    for (let i = 0; i < this.args.length; i++) {
-      args.push(this.args[i].evaluate(context))
-    }
-    let func = context[this.callee.value]
-    return func.apply(this.base, args);
-  }
-
-}
-/* unused harmony export CallMember */
-
-
-class Literal {
-  constructor(value) {
-    this.value = value;
-  }
-  evaluate() {
-    return this.value;
-  }
-
-}
-/* unused harmony export Literal */
-
-class ObjectLiteral {
-  constructor(keys, values) {
-    this.keys = keys;
-    this.values = values;
-  }
-  evaluate(context) {
-    let value = {}
-    for (let i = 0; i < this.keys.length; i++) {
-      value[this.keys[i].evaluate(context)] = this.values[i].evaluate(context)
-      return value;
-    }
-  }
-
-}
-/* unused harmony export ObjectLiteral */
-
-
-class Identifier {
-  constructor(value) {
-    this.value = value;
-    this._value;
-  }
-
-  evaluate(context) {
-    return context[this.value];
-  }
-
-  observe(binding, context) {
-    this.context = context;
-    this._value = this.evaluate(context);
-    let decorator = {}
-    this.binding = binding;
-    decorator.get = () => {
-      return this._value
-    }
-    decorator.set = (newValue) => {
-      this._value = newValue;
-      binding.update(newValue);
-    }
-    Reflect.defineProperty(context, this.value, decorator);
-  }
-
-  assign(value) {
-    this.context[this.value] = value;
-    this.binding.update(value);
-  }
-
-}
-/* unused harmony export Identifier */
-
-class ConditionalExpression {
-  constructor(expr, truthy, falsey) {
-    this.expr = expr;
-    this.truthy = truthy
-    this.falsey = falsey
-  }
-
-  evaluate(context) {
-    if (this.expr.evaluate(context))
-      return this.truthy.evaluate(context);
-    return this.falsey.evaluate(context);
-  }
-}
-/* unused harmony export ConditionalExpression */
-
-
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.ConditionalExpression = exports.Identifier = exports.ObjectLiteral = exports.Literal = exports.CallMember = exports.AccessMember = exports.BinaryOperation = exports.Parser = undefined;\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _tokenizer = __webpack_require__(/*! ./tokenizer */ \"../../src/bw-binding/tokenizer.js\");\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar Parser = exports.Parser = function () {\n  function Parser() {\n    _classCallCheck(this, Parser);\n  }\n\n  _createClass(Parser, [{\n    key: \"parse\",\n    value: function parse(input) {\n      this.tokenize = new _tokenizer.Tokenize(input);\n      this.token = this.tokenize.next();\n      var result = void 0;\n      while (this.token.type !== _tokenizer.tokenType.eof) {\n        result = this.parseStatement();\n        this.token = this.tokenize.next();\n      }\n\n      return result;\n    }\n  }, {\n    key: \"parseStatement\",\n    value: function parseStatement() {\n      var expression = this.parseExpression();\n      return expression;\n    }\n  }, {\n    key: \"parseExpression\",\n    value: function parseExpression() {\n      return this.parseConditional();\n    }\n\n    //handles ? : conditionals;\n\n  }, {\n    key: \"parseConditional\",\n    value: function parseConditional() {\n      var expr = this.parseExprOps();\n      if (this.eat(_tokenizer.tokenType.question)) {\n        var truthy = this.parseExpression();\n        this.expect(_tokenizer.tokenType.colon);\n        var falsey = this.parseExpression();\n        return new ConditionalExpression(expr, truthy, falsey);\n      }\n      return expr;\n    }\n  }, {\n    key: \"parseExprOps\",\n    value: function parseExprOps() {\n      var expr = this.parseExpressionSubscript();\n      return this.parseExprOp(expr, -1);\n    }\n  }, {\n    key: \"parseExprOp\",\n    value: function parseExprOp(left, minPrec) {\n      var prec = this.token.type.binop;\n      if (prec !== null && prec > minPrec) {\n        var logical = this.token.type === _tokenizer.tokenType.logicalOR || this.token.type === _tokenizer.tokenType.logicalAND;\n        var op = this.token.text;\n        this.advance();\n        var right = this.parseExprOp(this.parseExpressionSubscript(), prec);\n        var expr = new BinaryOperation(left, op, right);\n        return this.parseExprOp(expr, minPrec);\n      }\n\n      return left;\n    }\n\n    // parse call, dot and []\n\n  }, {\n    key: \"parseExpressionSubscript\",\n    value: function parseExpressionSubscript() {\n      var expr = this.parseExprAtom();\n      return this.parseSubscript(expr);\n    }\n  }, {\n    key: \"parseSubscript\",\n    value: function parseSubscript(base) {\n      for (var computed;;) {\n        if ((computed = this.eat(_tokenizer.tokenType.bracketLeft)) || this.eat(_tokenizer.tokenType.dot)) {\n          var expr = computed ? this.parseExpression() : this.parseSubscript(this.parseIdentifier());\n          if (computed) this.expect(_tokenizer.tokenType.bracketRight);\n          return new AccessMember(base, expr);\n        } else if (this.eat(_tokenizer.tokenType.callLeft)) {\n          var args = this.parseExpressionList(_tokenizer.tokenType.callRight);\n          return new CallMember(base, args);\n        }\n        return base;\n      }\n    }\n  }, {\n    key: \"parseExprAtom\",\n    value: function parseExprAtom() {\n      //need to account for -true or +false for prefix unary\n      switch (this.token.type) {\n        case _tokenizer.tokenType.name:\n          return this.parseIdentifier();\n\n        case _tokenizer.tokenType.number:\n        case _tokenizer.tokenType.string:\n          var text = this.token.text;\n          this.advance();\n          return new Literal(text);\n\n        case _tokenizer.tokenType._null:\n        case _tokenizer.tokenType._true:\n        case _tokenizer.tokenType._false:\n          var type = this.token.type === _tokenizer.tokenType._null ? null : this.token.type === _tokenizer.tokenType._true;\n          this.advance();\n          return new Literal(type);\n\n        case _tokenizer.tokenType._undefined:\n          this.advance();\n          return new Literal(_tokenizer.tokenType.undefined);\n\n        case _tokenizer.tokenType.braceLeft:\n          return this.parseObject();\n\n      }\n    }\n  }, {\n    key: \"parseObject\",\n    value: function parseObject() {\n      var first = true;\n      var keys = [];\n      var values = [];\n      this.advance();\n      while (!this.eat(_tokenizer.tokenType.braceRight)) {\n        if (!first) this.expect(_tokenizer.tokenType.comma);else first = false;\n        keys.push(this.parsePropertyName());\n        var value = void 0;\n        if (this.eat(_tokenizer.tokenType.comma) || this.eat(_tokenizer.tokenType.braceRight)) value = this.parseExpression();else {\n          this.expect(_tokenizer.tokenType.colon);\n          value = this.parseExpression();\n        }\n        values.push(value);\n      }\n      return new ObjectLiteral(keys, values);\n    }\n  }, {\n    key: \"parsePropertyName\",\n    value: function parsePropertyName() {\n      return this.token.type === _tokenizer.tokenType.number || this.token.type === _tokenizer.tokenType.string ? this.parseExpression() : this.parseIdentifier();\n    }\n  }, {\n    key: \"parseExpressionList\",\n    value: function parseExpressionList(close) {\n      var result = [];\n      var first = true;\n      while (!this.eat(close)) {\n        if (!first) this.expect(_tokenizer.tokenType.comma);else first = false;\n        result.push(this.parseExpression());\n      }\n      return result;\n    }\n  }, {\n    key: \"parseIdentifier\",\n    value: function parseIdentifier() {\n      // add in check;\n      var text = this.token.text;\n      this.advance();\n      return new Identifier(text);\n    }\n  }, {\n    key: \"eat\",\n    value: function eat(type) {\n      if (this.token.type === type) {\n        this.token = this.tokenize.next();\n        return true;\n      }\n      return false;\n    }\n  }, {\n    key: \"advance\",\n    value: function advance() {\n      this.token = this.tokenize.next();\n    }\n  }, {\n    key: \"expect\",\n    value: function expect(type) {\n      this.eat(type) || this.unexpected();\n    }\n  }, {\n    key: \"unexpected\",\n    value: function unexpected(pos) {\n      throw new Error(\"Unexpected token\");\n    }\n  }]);\n\n  return Parser;\n}();\n\nvar BinaryOperation = exports.BinaryOperation = function () {\n  function BinaryOperation(left, operation, right) {\n    _classCallCheck(this, BinaryOperation);\n\n    this.left = left;\n    this.operation = operation;\n    this.right = right;\n  }\n\n  _createClass(BinaryOperation, [{\n    key: \"evaluate\",\n    value: function evaluate(context) {\n      var left = this.left.evaluate(context);\n      var right = this.right.evaluate(context);\n\n      switch (this.operation) {\n        case \"&&\":\n          return left && right;\n        case \"||\":\n          return left || right;\n        case \"|\":\n          return left | right;\n        case \"^\":\n          return left ^ right;\n        case \"&\":\n          return left & right;\n        case \"===\":\n          return left === right;\n        case \"==\":\n          return left == right;\n        case \"!=\":\n          return left != right;\n        case \"!==\":\n          return left !== right;\n        case \"<\":\n          return left < right;\n        case \"<=\":\n          return left <= right;\n        case \">\":\n          return left > right;\n        case \">=\":\n          return left >= right;\n        case \"<<\":\n          return left << right;\n        case \">>\":\n          return left >> right;\n        case \"+\":\n          return left + right;\n        case \"-\":\n          return left - right;\n        case \"%\":\n          return left % right;\n        case \"*\":\n          return left * right;\n        case \"/\":\n          return left / right;\n\n      }\n    }\n  }]);\n\n  return BinaryOperation;\n}();\n\nvar AccessMember = exports.AccessMember = function () {\n  function AccessMember(base, expression) {\n    _classCallCheck(this, AccessMember);\n\n    this.base = base;\n    this.expression = expression;\n  }\n\n  _createClass(AccessMember, [{\n    key: \"evaluate\",\n    value: function evaluate(context) {\n      var base = this.base.evaluate(context);\n      var expr = this.expression.evaluate(base);\n      return expr;\n    }\n  }]);\n\n  return AccessMember;\n}();\n\nvar CallMember = exports.CallMember = function () {\n  function CallMember(callee, args) {\n    _classCallCheck(this, CallMember);\n\n    this.callee = callee;\n    this.args = args;\n  }\n\n  _createClass(CallMember, [{\n    key: \"evaluate\",\n    value: function evaluate(context) {\n      var args = [];\n      for (var i = 0; i < this.args.length; i++) {\n        args.push(this.args[i].evaluate(context));\n      }\n      var func = context[this.callee.value];\n      return func.apply(this.base, args);\n    }\n  }]);\n\n  return CallMember;\n}();\n\nvar Literal = exports.Literal = function () {\n  function Literal(value) {\n    _classCallCheck(this, Literal);\n\n    this.value = value;\n  }\n\n  _createClass(Literal, [{\n    key: \"evaluate\",\n    value: function evaluate() {\n      return this.value;\n    }\n  }]);\n\n  return Literal;\n}();\n\nvar ObjectLiteral = exports.ObjectLiteral = function () {\n  function ObjectLiteral(keys, values) {\n    _classCallCheck(this, ObjectLiteral);\n\n    this.keys = keys;\n    this.values = values;\n  }\n\n  _createClass(ObjectLiteral, [{\n    key: \"evaluate\",\n    value: function evaluate(context) {\n      var value = {};\n      for (var i = 0; i < this.keys.length; i++) {\n        value[this.keys[i].evaluate(context)] = this.values[i].evaluate(context);\n        return value;\n      }\n    }\n  }]);\n\n  return ObjectLiteral;\n}();\n\nvar Identifier = exports.Identifier = function () {\n  function Identifier(value) {\n    _classCallCheck(this, Identifier);\n\n    this.value = value;\n    this._value;\n  }\n\n  _createClass(Identifier, [{\n    key: \"evaluate\",\n    value: function evaluate(context) {\n      return context[this.value];\n    }\n  }, {\n    key: \"observe\",\n    value: function observe(binding, context) {\n      var _this = this;\n\n      this.context = context;\n      this._value = this.evaluate(context);\n      var decorator = {};\n      this.binding = binding;\n      decorator.get = function () {\n        return _this._value;\n      };\n      decorator.set = function (newValue) {\n        _this._value = newValue;\n        binding.update(newValue);\n      };\n      Reflect.defineProperty(context, this.value, decorator);\n    }\n  }, {\n    key: \"assign\",\n    value: function assign(value) {\n      this.context[this.value] = value;\n      this.binding.update(value);\n    }\n  }]);\n\n  return Identifier;\n}();\n\nvar ConditionalExpression = exports.ConditionalExpression = function () {\n  function ConditionalExpression(expr, truthy, falsey) {\n    _classCallCheck(this, ConditionalExpression);\n\n    this.expr = expr;\n    this.truthy = truthy;\n    this.falsey = falsey;\n  }\n\n  _createClass(ConditionalExpression, [{\n    key: \"evaluate\",\n    value: function evaluate(context) {\n      if (this.expr.evaluate(context)) return this.truthy.evaluate(context);\n      return this.falsey.evaluate(context);\n    }\n  }]);\n\n  return ConditionalExpression;\n}();\n\n//# sourceURL=webpack:///./src/bw-binding/parser.js?");
 
 /***/ }),
 
 /***/ "../../src/bw-binding/tokenizer.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*!*************************************!*\
+  !*** ./src/bw-binding/tokenizer.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-class Token {
-  constructor(type, text) {
-    this.text = text;
-    this.type = type;
-  }
-}
-/* unused harmony export Token */
-
-class Tokenizer {
-  constructor() {
-    this.reText = /^[a-z$_][a-z0-9_$]+/i
-    this.reWhitespace = /^[\s]+/i
-    this.reQuoteText = /(^['"])([\w\s'"\\]+)\1/
-  }
-  scan(text) {
-    let tokens = [];
-    this.pos = 0;
-
-    this.length = text.length;
-    let token = this.tokenize(text);
-
-    while (token) {
-      tokens.push(token);
-      if (this.pos >= this.length)
-        break;
-      token = this.tokenize(text.substring(this.pos, this.length));
-    }
-
-    return tokens;
-
-  }
-
-  tokenize(text) {
-    if (this.reText.test(text)) {
-      let match = this.reText.exec(text);
-      this.pos += match[0].length;
-      return new Token(match[0]);
-    }
-
-
-    if (this.reWhitespace.test(text)) {
-      let match = this.reWhitespace.exec(text);
-      this.pos += match[0].length;
-      return this.tokenize(text.substring(match[0].length, this.length))
-    }
-
-    let char = text.charCodeAt(0);
-    if (char === 46) { // period
-      this.pos += 1;
-      return new Token(".");
-    }
-    if (singleTokenCharacterCodes.indexOf(char) > -1) {
-      this.pos += 1;
-      return new Token(String.fromCharCode(char));
-    }
-    if (quoteCharacterCodes.indexOf(char) > -1) {
-      this.pos += 1;
-      if (this.reQuoteText.test(text)) {
-        let match = this.reQuoteText.exec(text);
-        let quote = match[2];
-        this.pos += match[0].length - 1;
-        let reUnicode = /\\([a-z0-9])/gi;
-        let unicode = reUnicode.exec(quote);
-
-        while (unicode) {
-          switch (unicode[1]) {
-            case "u":
-              if (/\\u[\dA-F]{4}/gi.test(quote))
-                quote.replace(/\\u([\dA-F]{4})/gi, (m, r) => { return String.fromCharCode(parseInt(r, 16)); });
-              else
-                throw new Error("Invalid unicode escape sequence")
-            case "x":
-              if (/\\x[\dA-F]{2}/gi.test(quote))
-                quote.replace(/\\x([\dA-F]{2})/gi, (m, r) => { return String.fromCharCode(parseInt(r, 16)); });
-              else
-                throw new Error("Invalid unicode escape sequence")
-            case "t":
-              quote = quote.replace("\\t", "\t");
-            case "r":
-              quote = quote.replace("\\r", "\r");
-            case "n":
-              quote = quote.replace("\\n", "\n");
-            case "b":
-              quote = quote.replace("\\b", "\b");
-            case "f":
-              quote = quote.replace("\\f", "\f");
-            case "v":
-              quote = quote.replace("\\v", "\v");
-            default:
-              quote = quote.replace(unicode[0], unicode[1]);
-          }
-        unicode = reUnicode.exec(quote);
-        }
-
-        return new Token(quote)
-      }
-    }
-    throw new Error("Cannot parse: " + text);
-  }
-}
-/* unused harmony export Tokenizer */
-
-
-
-class Tokenize {
-  constructor(input) {
-    this.start = 0;
-    this.pos = 0;
-    this.end = 0;
-    this.input = input;
-  }
-
-  next() {
-    this.skipWhiteSpace();
-    this.start = this.pos;
-    if (this.start >= this.input.length)
-      return this.finishToken(tokenType.eof);
-
-    return this.getTokenFromChar(this.fixedCharCodeAt())
-  }
-
-
-  fixedCharCodeAt() {
-    let char = this.input.charCodeAt(this.pos);
-    if (0xD800 <= char && char <= 0xDB7F) {
-      let next = this.inputcharCodeAt(this.pos + 1);
-      return (char << 10) + next - 0x35fdc00
-    }
-    return char;
-  }
-
-
-
-  skipWhiteSpace() {
-    loop:  while (this.pos < this.input.length) {
-      let char = this.input.charCodeAt(this.pos);
-      switch (char) {
-        case 10:
-        case 32:
-        case 160:
-          ++this.pos;
-          break;
-        case 13:
-          if (this.input.charCodeAt(this.pos + 1) === 10) {
-            ++this.pos
-          }
-          break;
-        default:
-          if (char > 8 && char < 14 || char >= 5760 && nonASCIIwhitespace.test(String.fromCharCode(char))) {
-            ++this.pos
-          } else {
-            break loop;
-          }
-      }
-    }
-
-  }
-  isIdentifierStart(char) {
-    if (char < 65) return char === 36; //$
-    if (char < 91) return true; //A-Z
-    if (char < 97) return char === 95; // _
-    if (char < 123) return true;//a-z;
-    //not including > 0xffffff identifier starts
-    return false;
-  }
-  isIdentifierChar(char) {
-    if (char < 48) return char === 36; // 1 - 9 or $
-    if (char < 58) return true;
-    if (char < 65) return false;
-    if (char < 91) return true;
-    if (char < 97) return char === 95;
-    if (char < 123) return true;
-
-    return false;
-  }
-
-  getTokenFromChar(char) {
-    if (this.isIdentifierStart(char)) {
-      return this.readIdentifier();
-    }
-    switch (char) {
-      case 46:
-        return this.readDot();
-
-      case 40: // (
-        ++this.pos;
-        return this.finishToken(tokenType.callLeft);
-      case 41: // )
-        ++this.pos;
-        return this.finishToken(tokenType.callRight);
-      case 59: // ;
-        ++this.pos;
-        return this.finishToken(tokenType.colon);
-      case 44: // ,
-        ++this.pos;
-        return this.finishToken(tokenType.comma);
-      case 91: // [
-        ++this.pos;
-        return this.finishToken(tokenType.bracketLeft);
-      case 93: // ]
-        ++this.pos;
-        return this.finishToken(tokenType.bracketRight);
-      case 123: // {
-        ++this.pos;
-        return this.finishToken(tokenType.braceLeft);
-      case 125: // }
-        ++this.pos;
-        return this.finishToken(tokenType.braceRight);
-      case 58: // :
-        ++this.pos;
-        return this.finishToken(tokenType.colon);
-      case 63: // ?
-        ++this.pos;
-        return this.finishToken(tokenType.question);
-      case 37: // %
-        ++this.pos;
-        return this.finishToken(tokenType.modulo);
-      case 42: // *
-        ++this.pos;
-        return this.finishToken(tokenType.star);
-      case 43: // +
-      case 45: // -
-        ++this.pos;
-        return this.finishToken(tokenType.plusMin);
-      case 47: // /
-        ++this.pos;
-        return this.finishToken(tokenType.slash);
-      case 94: // ^
-        ++this.pos;
-        return this.finishToken(tokenType.bitwiseXOR);
-      case 48: // 0 - octal/hex/binary
-        let next = this.input.charCodeAt(this.pos + 1)
-        if (next === 120 || next === 88)
-          return this.readRadixNumber(16) // '0x', '0X' - hex number
-        if (this.options.ecmaVersion >= 6) {
-          if (next === 111 || next === 79)
-            return this.readRadixNumber(8) // '0o', '0O' - octal number
-          if (next === 98 || next === 66)
-            return this.readRadixNumber(2) // '0b', '0B' - binary number
-      }
-
-      case 49:
-      case 50:
-      case 51:
-      case 52:
-      case 53:
-      case 54:
-      case 55:
-      case 56:
-      case 57:
-        return this.readNumber(false);
-
-      case 34: // '
-      case 39: // "
-        return this.readString(char);
-
-      case 60: // >
-      case 62: // <
-        return this.readOperator(char, 61, "=", tokenType.relational);
-      case 33: // !
-      case 61: // =
-        return this.readOperator(char, 61, "=", tokenType.equality);
-
-      case 124:
-      return this.readOperator(char, 124, "|")
-      case 38:
-        return this.readOperator(char, 38, "&")
-    }
-  }
-  readString(quote) {
-    let str = "";
-    let start = ++this.pos;
-    for (;;) {
-      if (this.pos >= this.input.length)
-        throw new Error("Unterminated string constant");
-      let char = this.input.charCodeAt(this.pos);
-      if (char === quote)
-        break;
-      if (char === 92) { // '\'
-        str += this.input.slice(start, this.pos);
-        str += this.readEscapedChar(false);
-        start = this.pos;
-      } else {
-        if (char === 10 || char === 13 || char === 0x2028 || char === 0x2029)
-          throw new Error("Unterminated string constant")
-        ++this.pos;
-      }
-    }
-    str += this.input.slice(start, this.pos++);
-    return this.finishToken(tokenType.string, str);
-  }
-
-  readEscapedChar(inTemplate) {
-    let ch = this.input.charCodeAt(++this.pos)
-    ++this.pos
-    switch (ch) {
-      case 110: return "\n" // 'n' -> '\n'
-      case 114: return "\r" // 'r' -> '\r'
-      case 120: return String.fromCharCode(this.readHexChar(2)) // 'x'
-      case 117: return codePointToString(this.readHexChar(4)) // 'u'
-      case 116: return "\t" // 't' -> '\t'
-      case 98: return "\b" // 'b' -> '\b'
-      case 118: return "\u000b" // 'v' -> '\u000b'
-      case 102: return "\f" // 'f' -> '\f'
-      case 13: return "\r"
-      case 10: return "\n"
-        if (this.options.locations) { this.lineStart = this.pos; ++this.curLine }
-        return ""
-      default:
-        if (ch >= 48 && ch <= 55) {
-          let octalStr = this.input.substr(this.pos - 1, 3).match(/^[0-7]+/)[0]
-          let octal = parseInt(octalStr, 8)
-          if (octal > 255) {
-            octalStr = octalStr.slice(0, -1)
-            octal = parseInt(octalStr, 8)
-          }
-          if (octalStr !== "0" && (this.strict || inTemplate)) {
-            this.raise(this.pos - 2, "Octal literal in strict mode")
-          }
-          this.pos += octalStr.length - 1
-          return String.fromCharCode(octal)
-        }
-        return String.fromCharCode(ch)
-      }
-  }
-
-  readOperator(char, nextChar, str, type) {
-    let next = this.input.charCodeAt(this.pos + 1);
-    let operation = String.fromCharCode(char);
-    if (next === nextChar) {
-      ++this.pos;
-      operation += str;
-      next = this.input.charCodeAt(this.pos + 1);
-      if ((char === 61 || char === 33) && next === nextChar) {
-        ++this.pos;
-        operation += str;
-      }
-    }
-    ++this.pos;
-    return this.finishToken(type, operation);
-  }
-
-  readIdentifier() {
-    let start = this.pos;
-    while (this.isIdentifierChar(this.fixedCharCodeAt())) {
-      ++this.pos;
-    }
-    let word = this.input.slice(start, this.pos)
-
-    let type = tokenType.name;
-    if (word === "true")
-      type = tokenType._true;
-    if (word === "false")
-      type = tokenType._false;
-    if (word === "null")
-      tpye = tokenType._null
-    if (word === "undefined")
-      type = tokenType._undefined;
-
-    return this.finishToken(type, word);
-  }
-  readDot() {
-    let char = this.input.charCodeAt(this.pos + 1);
-    if (char >= 48 && char <=57) return this.readNumber(true);
-    ++this.pos;
-    return this.finishToken(tokenType.dot)
-  }
-  readNumber(startsWithDot) {
-    let char;
-    let start = this.pos;
-    let pos = this.pos;
-    let isFloat = false;
-    let isOctal = this.input.charCodeAt(this.pos) === 48; //0
-    if (startsWithDot)
-      char = this.input.slice(this.pos+1)
-    else
-      char = this.input.slice(this.pos)
-    if (isOctal && this.pos === start + 1)
-      isOctal = false
-    while (true) {
-      if (!(char >= 48 && char <=57)) {
-        break;
-      }
-      next = this.input.charCodeAt(pos+1);
-      if (next === 46 && !isOctal)
-        isFloat = true;
-
-      if ((next == 69 || next === 101) && !isOctal) { // eE
-        next = this.input.charCodeAt(++this.pos);
-        if (next === 43 || next == 45)
-          ++pos;
-        if (parseInt(this.input.slice(start, pos) ,10) === NaN)
-          throw new Error("Invalid Number");
-        isFloat = true;
-      }
-
-      ++pos;
-      char = this.input.charCodeAt(pos)
-    }
-    this.pos += pos+1;
-    let value;
-    let num = this.input.slice(start, this.pos);
-
-    if (isFloat)
-      value = parseFloat(num)
-    else if (!isOctal || num.length === 1)
-      value = parseInt(num, 10);
-    else
-      value = parseInt(str, 8); //octal
-
-    return this.finishToken(tokenType.number, value);
-    /*
-    let start = this.pos;
-    let value;
-    let isFloat = false;
-    let isOctal = this.input.charCodeAt(this.pos) === 48; //0
-    console.log(start);
-    console.log(String.fromCharCode(this.input.charCodeAt(this.pos)))
-
-    if (!startsWithDot && this.readInt(10) === null)
-      throw new Error ("Invalid Number");
-    if (isOctal && this.pos === start + 1)
-      isOctal = false; //00
-    let next = this.input.charCodeAt(this.pos);
-    console.log(String.fromCharCode(next))
-    if (next === 46 && !isOctal) { // .
-      next = this.input.charCodeAt(++this.pos);
-      isFloat = true;
-    }
-    if ((next == 69 || next === 101) && !isOctal) { // eE
-      next = this.input.charCodeAt(++this.pos);
-      if (next === 43 || next == 45)
-        ++this.pos;
-      if (this.readInt(10) === null)
-        throw new Error("Invalid Number");
-      isFloat = true;
-    }
-    let num = this.input.slice(start, this.pos);
-
-    if (isFloat)
-      value = parseFloat(num)
-    else if (!isOctal || num.length === 1)
-      value = parseInt(num, 10);
-    else
-      value = parseInt(str, 8); //octal
-
-    return this.finishToken(tokenType.number, value); */
-  }
-  readRadixNumber(radix) {
-    this.pos += 2 // 0x
-    let value = this.readInt(radix)
-    if (value == null) throw new Error("Expected number in radix " + radix)
-    if (isIdentifierStart(this.fixedCharCodeAt())) throw new Error("Identifier directly after number")
-    return this.finishToken(tokenType.number, value)
-  }
-
-
-
-  finishToken(type, text) {
-    return new Token(type, text);
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Tokenize;
-
-
-function codePointToString(code) {
-  // UTF-16 Decoding
-  if (code <= 0xFFFF) return String.fromCharCode(code)
-  code -= 0x10000
-  return String.fromCharCode((code >> 10) + 0xD800, (code & 1023) + 0xDC00)
-}
-
-class TokenType {
-  constructor(label, conf = {}) {
-    this.label = label;
-    this.keyword = conf.keyword
-    this.beforeExpr = !!conf.beforeExpr
-    this.startsExpr = !!conf.startsExpr
-    this.prefix = !!conf.prefix
-    this.postfix = !!conf.postfix
-    this.binop = conf.binop || null
-  }
-}
-/* unused harmony export TokenType */
-
-
-const tokenType = {
-  dot: new TokenType("."),
-  string: new TokenType("String"),
-  name: new TokenType("Name"),
-  eof: new TokenType("eof"),
-  number: new TokenType("Number"),
-  braceLeft: new TokenType("{"),
-  braceRight: new TokenType("}"),
-  bracketLeft: new TokenType("["),
-  bracketRight: new TokenType("]"),
-  callLeft: new TokenType("("),
-  callRight: new TokenType(")"),
-  comma: new TokenType(","),
-  colon: new TokenType(":"),
-  semi: new TokenType(";"),
-  question: new TokenType("?"),
-  dollarBraceL: new TokenType("${"),
-  operation: new TokenType("Operation"),
-  _null: new TokenType("null"),
-  _false: new TokenType("false"),
-  _true: new TokenType("true"),
-  _undefined: new TokenType("undefined"),
-  logicalOR: binop("||", 1),
-  logicalAND: binop("&&", 2),
-  bitwiseOR: binop("|", 3),
-  bitwiseXOR: binop("^", 4),
-  bitwiseAND: binop("&", 5),
-  equality: binop("==/!=", 6),
-  relational: binop("</>", 7),
-  bitShift: binop("<</>>", 8),
-  plusMin: new TokenType("+/-", {beforeExpr: true, binop: 9}),
-  modulo: binop("%", 10),
-  star: binop("*", 10),
-  slash: binop("/", 10),
-}
-/* harmony export (immutable) */ __webpack_exports__["b"] = tokenType;
-
-
-function binop(name, prec) {
-  return new TokenType(name, {beforeExpr: true, binop: prec})
-}
-
-const nonASCIIwhitespace = /[\u1680\u180e\u2000-\u200a\u202f\u205f\u3000\ufeff]/
-const singleTokenCharacterCodes = [
-  40,  // (
-  41,  // )
-  44,  // ,
-  58,  // :
-  59,  // ;
-  91,  // [
-  93,  // ]
-  123, // {
-  125  // }
-]
-const quoteCharacterCodes = [
-  34, // "
-  39, // '
-]
-
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar Token = exports.Token = function Token(type, text) {\n  _classCallCheck(this, Token);\n\n  this.text = text;\n  this.type = type;\n};\n\nvar Tokenizer = exports.Tokenizer = function () {\n  function Tokenizer() {\n    _classCallCheck(this, Tokenizer);\n\n    this.reText = /^[a-z$_][a-z0-9_$]+/i;\n    this.reWhitespace = /^[\\s]+/i;\n    this.reQuoteText = /(^['\"])([\\w\\s'\"\\\\]+)\\1/;\n  }\n\n  _createClass(Tokenizer, [{\n    key: \"scan\",\n    value: function scan(text) {\n      var tokens = [];\n      this.pos = 0;\n\n      this.length = text.length;\n      var token = this.tokenize(text);\n\n      while (token) {\n        tokens.push(token);\n        if (this.pos >= this.length) break;\n        token = this.tokenize(text.substring(this.pos, this.length));\n      }\n\n      return tokens;\n    }\n  }, {\n    key: \"tokenize\",\n    value: function tokenize(text) {\n      if (this.reText.test(text)) {\n        var match = this.reText.exec(text);\n        this.pos += match[0].length;\n        return new Token(match[0]);\n      }\n\n      if (this.reWhitespace.test(text)) {\n        var _match = this.reWhitespace.exec(text);\n        this.pos += _match[0].length;\n        return this.tokenize(text.substring(_match[0].length, this.length));\n      }\n\n      var char = text.charCodeAt(0);\n      if (char === 46) {\n        // period\n        this.pos += 1;\n        return new Token(\".\");\n      }\n      if (singleTokenCharacterCodes.indexOf(char) > -1) {\n        this.pos += 1;\n        return new Token(String.fromCharCode(char));\n      }\n      if (quoteCharacterCodes.indexOf(char) > -1) {\n        this.pos += 1;\n        if (this.reQuoteText.test(text)) {\n          var _match2 = this.reQuoteText.exec(text);\n          var quote = _match2[2];\n          this.pos += _match2[0].length - 1;\n          var reUnicode = /\\\\([a-z0-9])/gi;\n          var unicode = reUnicode.exec(quote);\n\n          while (unicode) {\n            switch (unicode[1]) {\n              case \"u\":\n                if (/\\\\u[\\dA-F]{4}/gi.test(quote)) quote.replace(/\\\\u([\\dA-F]{4})/gi, function (m, r) {\n                  return String.fromCharCode(parseInt(r, 16));\n                });else throw new Error(\"Invalid unicode escape sequence\");\n              case \"x\":\n                if (/\\\\x[\\dA-F]{2}/gi.test(quote)) quote.replace(/\\\\x([\\dA-F]{2})/gi, function (m, r) {\n                  return String.fromCharCode(parseInt(r, 16));\n                });else throw new Error(\"Invalid unicode escape sequence\");\n              case \"t\":\n                quote = quote.replace(\"\\\\t\", \"\\t\");\n              case \"r\":\n                quote = quote.replace(\"\\\\r\", \"\\r\");\n              case \"n\":\n                quote = quote.replace(\"\\\\n\", \"\\n\");\n              case \"b\":\n                quote = quote.replace(\"\\\\b\", \"\\b\");\n              case \"f\":\n                quote = quote.replace(\"\\\\f\", \"\\f\");\n              case \"v\":\n                quote = quote.replace(\"\\\\v\", \"\\v\");\n              default:\n                quote = quote.replace(unicode[0], unicode[1]);\n            }\n            unicode = reUnicode.exec(quote);\n          }\n\n          return new Token(quote);\n        }\n      }\n      throw new Error(\"Cannot parse: \" + text);\n    }\n  }]);\n\n  return Tokenizer;\n}();\n\nvar Tokenize = exports.Tokenize = function () {\n  function Tokenize(input) {\n    _classCallCheck(this, Tokenize);\n\n    this.start = 0;\n    this.pos = 0;\n    this.end = 0;\n    this.input = input;\n  }\n\n  _createClass(Tokenize, [{\n    key: \"next\",\n    value: function next() {\n      this.skipWhiteSpace();\n      this.start = this.pos;\n      if (this.start >= this.input.length) return this.finishToken(tokenType.eof);\n\n      return this.getTokenFromChar(this.fixedCharCodeAt());\n    }\n  }, {\n    key: \"fixedCharCodeAt\",\n    value: function fixedCharCodeAt() {\n      var char = this.input.charCodeAt(this.pos);\n      if (0xD800 <= char && char <= 0xDB7F) {\n        var _next = this.inputcharCodeAt(this.pos + 1);\n        return (char << 10) + _next - 0x35fdc00;\n      }\n      return char;\n    }\n  }, {\n    key: \"skipWhiteSpace\",\n    value: function skipWhiteSpace() {\n      loop: while (this.pos < this.input.length) {\n        var char = this.input.charCodeAt(this.pos);\n        switch (char) {\n          case 10:\n          case 32:\n          case 160:\n            ++this.pos;\n            break;\n          case 13:\n            if (this.input.charCodeAt(this.pos + 1) === 10) {\n              ++this.pos;\n            }\n            break;\n          default:\n            if (char > 8 && char < 14 || char >= 5760 && nonASCIIwhitespace.test(String.fromCharCode(char))) {\n              ++this.pos;\n            } else {\n              break loop;\n            }\n        }\n      }\n    }\n  }, {\n    key: \"isIdentifierStart\",\n    value: function isIdentifierStart(char) {\n      if (char < 65) return char === 36; //$\n      if (char < 91) return true; //A-Z\n      if (char < 97) return char === 95; // _\n      if (char < 123) return true; //a-z;\n      //not including > 0xffffff identifier starts\n      return false;\n    }\n  }, {\n    key: \"isIdentifierChar\",\n    value: function isIdentifierChar(char) {\n      if (char < 48) return char === 36; // 1 - 9 or $\n      if (char < 58) return true;\n      if (char < 65) return false;\n      if (char < 91) return true;\n      if (char < 97) return char === 95;\n      if (char < 123) return true;\n\n      return false;\n    }\n  }, {\n    key: \"getTokenFromChar\",\n    value: function getTokenFromChar(char) {\n      if (this.isIdentifierStart(char)) {\n        return this.readIdentifier();\n      }\n      switch (char) {\n        case 46:\n          return this.readDot();\n\n        case 40:\n          // (\n          ++this.pos;\n          return this.finishToken(tokenType.callLeft);\n        case 41:\n          // )\n          ++this.pos;\n          return this.finishToken(tokenType.callRight);\n        case 59:\n          // ;\n          ++this.pos;\n          return this.finishToken(tokenType.colon);\n        case 44:\n          // ,\n          ++this.pos;\n          return this.finishToken(tokenType.comma);\n        case 91:\n          // [\n          ++this.pos;\n          return this.finishToken(tokenType.bracketLeft);\n        case 93:\n          // ]\n          ++this.pos;\n          return this.finishToken(tokenType.bracketRight);\n        case 123:\n          // {\n          ++this.pos;\n          return this.finishToken(tokenType.braceLeft);\n        case 125:\n          // }\n          ++this.pos;\n          return this.finishToken(tokenType.braceRight);\n        case 58:\n          // :\n          ++this.pos;\n          return this.finishToken(tokenType.colon);\n        case 63:\n          // ?\n          ++this.pos;\n          return this.finishToken(tokenType.question);\n        case 37:\n          // %\n          ++this.pos;\n          return this.finishToken(tokenType.modulo);\n        case 42:\n          // *\n          ++this.pos;\n          return this.finishToken(tokenType.star);\n        case 43: // +\n        case 45:\n          // -\n          ++this.pos;\n          return this.finishToken(tokenType.plusMin);\n        case 47:\n          // /\n          ++this.pos;\n          return this.finishToken(tokenType.slash);\n        case 94:\n          // ^\n          ++this.pos;\n          return this.finishToken(tokenType.bitwiseXOR);\n        case 48:\n          // 0 - octal/hex/binary\n          var _next2 = this.input.charCodeAt(this.pos + 1);\n          if (_next2 === 120 || _next2 === 88) return this.readRadixNumber(16); // '0x', '0X' - hex number\n          if (this.options.ecmaVersion >= 6) {\n            if (_next2 === 111 || _next2 === 79) return this.readRadixNumber(8); // '0o', '0O' - octal number\n            if (_next2 === 98 || _next2 === 66) return this.readRadixNumber(2); // '0b', '0B' - binary number\n          }\n\n        case 49:\n        case 50:\n        case 51:\n        case 52:\n        case 53:\n        case 54:\n        case 55:\n        case 56:\n        case 57:\n          return this.readNumber(false);\n\n        case 34: // '\n        case 39:\n          // \"\n          return this.readString(char);\n\n        case 60: // >\n        case 62:\n          // <\n          return this.readOperator(char, 61, \"=\", tokenType.relational);\n        case 33: // !\n        case 61:\n          // =\n          return this.readOperator(char, 61, \"=\", tokenType.equality);\n\n        case 124:\n          return this.readOperator(char, 124, \"|\");\n        case 38:\n          return this.readOperator(char, 38, \"&\");\n      }\n    }\n  }, {\n    key: \"readString\",\n    value: function readString(quote) {\n      var str = \"\";\n      var start = ++this.pos;\n      for (;;) {\n        if (this.pos >= this.input.length) throw new Error(\"Unterminated string constant\");\n        var char = this.input.charCodeAt(this.pos);\n        if (char === quote) break;\n        if (char === 92) {\n          // '\\'\n          str += this.input.slice(start, this.pos);\n          str += this.readEscapedChar(false);\n          start = this.pos;\n        } else {\n          if (char === 10 || char === 13 || char === 0x2028 || char === 0x2029) throw new Error(\"Unterminated string constant\");\n          ++this.pos;\n        }\n      }\n      str += this.input.slice(start, this.pos++);\n      return this.finishToken(tokenType.string, str);\n    }\n  }, {\n    key: \"readEscapedChar\",\n    value: function readEscapedChar(inTemplate) {\n      var ch = this.input.charCodeAt(++this.pos);\n      ++this.pos;\n      switch (ch) {\n        case 110:\n          return \"\\n\"; // 'n' -> '\\n'\n        case 114:\n          return \"\\r\"; // 'r' -> '\\r'\n        case 120:\n          return String.fromCharCode(this.readHexChar(2)); // 'x'\n        case 117:\n          return codePointToString(this.readHexChar(4)); // 'u'\n        case 116:\n          return \"\\t\"; // 't' -> '\\t'\n        case 98:\n          return \"\\b\"; // 'b' -> '\\b'\n        case 118:\n          return \"\\x0B\"; // 'v' -> '\\u000b'\n        case 102:\n          return \"\\f\"; // 'f' -> '\\f'\n        case 13:\n          return \"\\r\";\n        case 10:\n          return \"\\n\";\n          if (this.options.locations) {\n            this.lineStart = this.pos;++this.curLine;\n          }\n          return \"\";\n        default:\n          if (ch >= 48 && ch <= 55) {\n            var octalStr = this.input.substr(this.pos - 1, 3).match(/^[0-7]+/)[0];\n            var octal = parseInt(octalStr, 8);\n            if (octal > 255) {\n              octalStr = octalStr.slice(0, -1);\n              octal = parseInt(octalStr, 8);\n            }\n            if (octalStr !== \"0\" && (this.strict || inTemplate)) {\n              this.raise(this.pos - 2, \"Octal literal in strict mode\");\n            }\n            this.pos += octalStr.length - 1;\n            return String.fromCharCode(octal);\n          }\n          return String.fromCharCode(ch);\n      }\n    }\n  }, {\n    key: \"readOperator\",\n    value: function readOperator(char, nextChar, str, type) {\n      var next = this.input.charCodeAt(this.pos + 1);\n      var operation = String.fromCharCode(char);\n      if (next === nextChar) {\n        ++this.pos;\n        operation += str;\n        next = this.input.charCodeAt(this.pos + 1);\n        if ((char === 61 || char === 33) && next === nextChar) {\n          ++this.pos;\n          operation += str;\n        }\n      }\n      ++this.pos;\n      return this.finishToken(type, operation);\n    }\n  }, {\n    key: \"readIdentifier\",\n    value: function readIdentifier() {\n      var start = this.pos;\n      while (this.isIdentifierChar(this.fixedCharCodeAt())) {\n        ++this.pos;\n      }\n      var word = this.input.slice(start, this.pos);\n\n      var type = tokenType.name;\n      if (word === \"true\") type = tokenType._true;\n      if (word === \"false\") type = tokenType._false;\n      if (word === \"null\") tpye = tokenType._null;\n      if (word === \"undefined\") type = tokenType._undefined;\n\n      return this.finishToken(type, word);\n    }\n  }, {\n    key: \"readDot\",\n    value: function readDot() {\n      var char = this.input.charCodeAt(this.pos + 1);\n      if (char >= 48 && char <= 57) return this.readNumber(true);\n      ++this.pos;\n      return this.finishToken(tokenType.dot);\n    }\n  }, {\n    key: \"readNumber\",\n    value: function readNumber(startsWithDot) {\n      var char = void 0;\n      var start = this.pos;\n      var pos = this.pos;\n      var isFloat = false;\n      var isOctal = this.input.charCodeAt(this.pos) === 48; //0\n      if (startsWithDot) char = this.input.slice(this.pos + 1);else char = this.input.slice(this.pos);\n      if (isOctal && this.pos === start + 1) isOctal = false;\n      while (true) {\n        if (!(char >= 48 && char <= 57)) {\n          break;\n        }\n        next = this.input.charCodeAt(pos + 1);\n        if (next === 46 && !isOctal) isFloat = true;\n\n        if ((next == 69 || next === 101) && !isOctal) {\n          // eE\n          next = this.input.charCodeAt(++this.pos);\n          if (next === 43 || next == 45) ++pos;\n          if (parseInt(this.input.slice(start, pos), 10) === NaN) throw new Error(\"Invalid Number\");\n          isFloat = true;\n        }\n\n        ++pos;\n        char = this.input.charCodeAt(pos);\n      }\n      this.pos += pos + 1;\n      var value = void 0;\n      var num = this.input.slice(start, this.pos);\n\n      if (isFloat) value = parseFloat(num);else if (!isOctal || num.length === 1) value = parseInt(num, 10);else value = parseInt(str, 8); //octal\n\n      return this.finishToken(tokenType.number, value);\n      /*\n      let start = this.pos;\n      let value;\n      let isFloat = false;\n      let isOctal = this.input.charCodeAt(this.pos) === 48; //0\n      console.log(start);\n      console.log(String.fromCharCode(this.input.charCodeAt(this.pos)))\n       if (!startsWithDot && this.readInt(10) === null)\n        throw new Error (\"Invalid Number\");\n      if (isOctal && this.pos === start + 1)\n        isOctal = false; //00\n      let next = this.input.charCodeAt(this.pos);\n      console.log(String.fromCharCode(next))\n      if (next === 46 && !isOctal) { // .\n        next = this.input.charCodeAt(++this.pos);\n        isFloat = true;\n      }\n      if ((next == 69 || next === 101) && !isOctal) { // eE\n        next = this.input.charCodeAt(++this.pos);\n        if (next === 43 || next == 45)\n          ++this.pos;\n        if (this.readInt(10) === null)\n          throw new Error(\"Invalid Number\");\n        isFloat = true;\n      }\n      let num = this.input.slice(start, this.pos);\n       if (isFloat)\n        value = parseFloat(num)\n      else if (!isOctal || num.length === 1)\n        value = parseInt(num, 10);\n      else\n        value = parseInt(str, 8); //octal\n       return this.finishToken(tokenType.number, value); */\n    }\n  }, {\n    key: \"readRadixNumber\",\n    value: function readRadixNumber(radix) {\n      this.pos += 2; // 0x\n      var value = this.readInt(radix);\n      if (value == null) throw new Error(\"Expected number in radix \" + radix);\n      if (isIdentifierStart(this.fixedCharCodeAt())) throw new Error(\"Identifier directly after number\");\n      return this.finishToken(tokenType.number, value);\n    }\n  }, {\n    key: \"finishToken\",\n    value: function finishToken(type, text) {\n      return new Token(type, text);\n    }\n  }]);\n\n  return Tokenize;\n}();\n\nfunction codePointToString(code) {\n  // UTF-16 Decoding\n  if (code <= 0xFFFF) return String.fromCharCode(code);\n  code -= 0x10000;\n  return String.fromCharCode((code >> 10) + 0xD800, (code & 1023) + 0xDC00);\n}\n\nvar TokenType = exports.TokenType = function TokenType(label) {\n  var conf = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};\n\n  _classCallCheck(this, TokenType);\n\n  this.label = label;\n  this.keyword = conf.keyword;\n  this.beforeExpr = !!conf.beforeExpr;\n  this.startsExpr = !!conf.startsExpr;\n  this.prefix = !!conf.prefix;\n  this.postfix = !!conf.postfix;\n  this.binop = conf.binop || null;\n};\n\nvar tokenType = exports.tokenType = {\n  dot: new TokenType(\".\"),\n  string: new TokenType(\"String\"),\n  name: new TokenType(\"Name\"),\n  eof: new TokenType(\"eof\"),\n  number: new TokenType(\"Number\"),\n  braceLeft: new TokenType(\"{\"),\n  braceRight: new TokenType(\"}\"),\n  bracketLeft: new TokenType(\"[\"),\n  bracketRight: new TokenType(\"]\"),\n  callLeft: new TokenType(\"(\"),\n  callRight: new TokenType(\")\"),\n  comma: new TokenType(\",\"),\n  colon: new TokenType(\":\"),\n  semi: new TokenType(\";\"),\n  question: new TokenType(\"?\"),\n  dollarBraceL: new TokenType(\"${\"),\n  operation: new TokenType(\"Operation\"),\n  _null: new TokenType(\"null\"),\n  _false: new TokenType(\"false\"),\n  _true: new TokenType(\"true\"),\n  _undefined: new TokenType(\"undefined\"),\n  logicalOR: binop(\"||\", 1),\n  logicalAND: binop(\"&&\", 2),\n  bitwiseOR: binop(\"|\", 3),\n  bitwiseXOR: binop(\"^\", 4),\n  bitwiseAND: binop(\"&\", 5),\n  equality: binop(\"==/!=\", 6),\n  relational: binop(\"</>\", 7),\n  bitShift: binop(\"<</>>\", 8),\n  plusMin: new TokenType(\"+/-\", { beforeExpr: true, binop: 9 }),\n  modulo: binop(\"%\", 10),\n  star: binop(\"*\", 10),\n  slash: binop(\"/\", 10)\n};\n\nfunction binop(name, prec) {\n  return new TokenType(name, { beforeExpr: true, binop: prec });\n}\n\nvar nonASCIIwhitespace = /[\\u1680\\u180e\\u2000-\\u200a\\u202f\\u205f\\u3000\\ufeff]/;\nvar singleTokenCharacterCodes = [40, // (\n41, // )\n44, // ,\n58, // :\n59, // ;\n91, // [\n93, // ]\n123, // {\n125 // }\n];\nvar quoteCharacterCodes = [34, // \"\n39];\n\n//# sourceURL=webpack:///./src/bw-binding/tokenizer.js?");
 
 /***/ }),
 
 /***/ "../../src/bw-client-router/index.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*!***************************************!*\
+  !*** ./src/bw-client-router/index.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bw_router__ = __webpack_require__("../../src/bw-router/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_bw_binding__ = __webpack_require__("../../src/bw-binding/index.js");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.Router = undefined;\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _bwRouter = __webpack_require__(/*! bw-router */ \"../../src/bw-router/index.js\");\n\nvar _bwBinding = __webpack_require__(/*! bw-binding */ \"../../src/bw-binding/index.js\");\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\nvar Router = exports.Router = function (_BaseRouter) {\n  _inherits(Router, _BaseRouter);\n\n  function Router(loader, templateCompiler, element) {\n    _classCallCheck(this, Router);\n\n    var _this = _possibleConstructorReturn(this, (Router.__proto__ || Object.getPrototypeOf(Router)).call(this, loader));\n\n    _this.currentState = { route: { pattern: \"/\", parent: null, view: \"index\" }, url: \"/\" };\n    _this.binding = new _bwBinding.BindingService(templateCompiler);\n    _this.history = window.history;\n    _this.element = element;\n    _this.loader = loader;\n\n    _this.isRouting = false;\n    window.addEventListener('popstate', _this.popstate.bind(_this));\n    window.addEventListener('click', _this.handleLink.bind(_this), true);\n\n    window.history.replaceState(_this.currentState, \"\", \"/\");\n    return _this;\n  }\n\n  _createClass(Router, [{\n    key: 'switchView',\n    value: function switchView(element, view) {\n      element.innerHTML = \"\";\n      element.appendChild(view);\n    }\n  }, {\n    key: 'bindView',\n    value: function bindView(content) {\n      var template = document.createElement('div');\n      template.innerHTML = content.view;\n      var view = template.firstElementChild;\n      this.binding.bindView(content.viewModel, view);\n      return view;\n    }\n  }, {\n    key: 'navigate',\n    value: function navigate(url) {\n      var _this2 = this;\n\n      var pushState = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;\n\n      this.isRouting = true;\n\n      var _findRoute = this.findRoute(url.split(\"?\")[0]),\n          params = _findRoute.params,\n          route = _findRoute.route;\n\n      if (url === '/') {\n        var target = this.element.querySelectorAll(\"view[router]\")[0];\n        /*\n        need a better method to handling the base route.\n         */\n        target.innerHTML = \"\";\n        if (pushState) this.history.pushState({ route: route, url: url }, \"\", url);\n      } else if (route) {\n        this.loader.load(route.view).then(function (content) {\n          var index = _this2.loader.modules.findIndex(function (i) {\n            return i.moduleId === route.parent;\n          });\n          var element = document.querySelectorAll(\"view[router]\")[index];\n          if (content.view && element) {\n            var view = _this2.bindView(content);\n            _this2.switchView(element, view);\n          }\n          if (pushState) _this2.history.pushState({ route: route, url: url }, \"\", url);\n\n          _this2.isRouting = false;\n        });\n      } else {\n        console.debug('Route not found');\n      }\n    }\n  }, {\n    key: 'closestAnchorElement',\n    value: function closestAnchorElement(target) {\n      var element = target;\n      while (element) {\n        if (element.tagName === 'A') return element;\n        element = element.parentNode;\n      }\n    }\n  }, {\n    key: 'handleLink',\n    value: function handleLink(event) {\n      var element = this.closestAnchorElement(event.target);\n\n      if (element && this.getTarget(element)) {\n        var href = element.getAttribute('href');\n        if (href) {\n          this.navigate(href);\n          event.preventDefault();\n        }\n      }\n    }\n  }, {\n    key: 'getTarget',\n    value: function getTarget(element) {\n      var target = element.getAttribute('target');\n      return !target || target === window.name || target === '_self' || target === 'top' && window.self === window.top;\n    }\n  }, {\n    key: 'popstate',\n    value: function popstate(event) {\n      this.navigate(event.state.url, false);\n    }\n  }]);\n\n  return Router;\n}(_bwRouter.BaseRouter);\n\n//# sourceURL=webpack:///./src/bw-client-router/index.js?");
 
+/***/ }),
 
-class Router extends __WEBPACK_IMPORTED_MODULE_0_bw_router__["a" /* BaseRouter */] {
-  constructor(loader, element) {
-    super(loader);
-    this.currentState = {route: {pattern: "/", parent: null, view: "index"}, url: "/"};
-    this.binding = new __WEBPACK_IMPORTED_MODULE_1_bw_binding__["a" /* BindingService */]();
-    this.history = window.history;
-    this.element = element;
-    this.loader = loader;
+/***/ "../../src/bw-component/index.js":
+/*!***********************************!*\
+  !*** ./src/bw-component/index.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-    this.isRouting = false;
-    window.addEventListener('popstate', this.popstate.bind(this));
-    window.addEventListener('click', this.handleLink.bind(this), true);
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _class, _temp;\n\nvar _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };\n\nexports.component = component;\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction component(options) {\n    return function (target, key, descriptor) {\n        console.log(target);\n        console.log(key);\n        console.log(descriptor);\n\n        target.__renderable__ = _extends({}, options);\n        console.log('adding...' + target);\n\n        HtmlComponent.list.push({\n            target: target,\n            name: target.name\n\n        });\n    };\n}\nvar HtmlComponent = exports.HtmlComponent = (_temp = _class = function () {\n    function HtmlComponent() {\n        _classCallCheck(this, HtmlComponent);\n    }\n\n    _createClass(HtmlComponent, [{\n        key: 'add',\n        value: function add(item) {\n            HtmlComponent.list.push(item);\n        }\n    }]);\n\n    return HtmlComponent;\n}(), _class.list = [], _temp);\n\n//# sourceURL=webpack:///./src/bw-component/index.js?");
 
-    window.history.replaceState(this.currentState, "", "/");
-  }
+/***/ }),
 
-  switchView(element, view) {
-    element.innerHTML = "";
-    element.appendChild(view);
-  }
+/***/ "../../src/bw-dependency-injection/index.js":
+/*!**********************************************!*\
+  !*** ./src/bw-dependency-injection/index.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-  bindView(content) {
-    let template = document.createElement('div')
-    template.innerHTML = content.view;
-    let view = template.firstElementChild;
-    this.binding.bindView(content.viewModel, view)
-    return view;
-  }
-
-  navigate(url, pushState = true) {
-    this.isRouting = true;
-    let {params, route} = this.findRoute(url.split("?")[0])
-     if (url === '/') {
-       let target = this.element.querySelectorAll("view[router]")[0];
-       /*
-       need a better method to handling the base route.
-
-       */
-       target.innerHTML = "";
-       if (pushState)
-         this.history.pushState({route: route, url: url}, "", url);
-    } else if (route) {
-      this.loader.load(route.view)
-      .then(content => {
-        let index = this.loader.modules.findIndex(i => i.moduleId === route.parent)
-        let element = document.querySelectorAll("view[router]")[index];
-        if (content.view && element) {
-          let view = this.bindView(content)
-          this.switchView(element, view)
-        }
-        if (pushState)
-          this.history.pushState({route: route, url: url}, "", url);
-
-
-        this.isRouting = false;
-      })
-
-    } else {
-      console.debug('Route not found');
-    }
-  }
-
-  closestAnchorElement(target) {
-    let element = target;
-    while (element) {
-      if (element.tagName === 'A')
-        return element;
-      element = element.parentNode;
-    }
-  }
-  handleLink(event) {
-    let element = this.closestAnchorElement(event.target);
-
-    if (element && this.getTarget(element)) {
-      let href = element.getAttribute('href');
-      if (href) {
-        this.navigate(href);
-        event.preventDefault();
-      }
-    }
-  }
-
-  getTarget(element) {
-    let target = element.getAttribute('target')
-    return (!target || target === window.name || target === '_self' || (target === 'top' && window.self === window.top))
-  }
-
-
-  popstate(event) {
-    this.navigate(event.state.url, false)
-  }
-
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Router;
-
-
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _typeof = typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; };\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nexports.depend = depend;\n\nfunction _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar Container = exports.Container = function () {\n  function Container() {\n    _classCallCheck(this, Container);\n\n    this.registry = new Map();\n  }\n\n  _createClass(Container, [{\n    key: \"resolve\",\n    value: function resolve(target) {\n      target = this._normalize(target);\n      var dependencies = this.resolveDependencies(target);\n      return this.getOrCreateInstance(target, dependencies);\n    }\n  }, {\n    key: \"resolveDependencies\",\n    value: function resolveDependencies(target) {\n      var dependencies = this.getDependencies(target);\n      var inject = [];\n      var _iteratorNormalCompletion = true;\n      var _didIteratorError = false;\n      var _iteratorError = undefined;\n\n      try {\n        for (var _iterator = dependencies[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {\n          var d = _step.value;\n\n          inject.push(this.resolve(d));\n        }\n      } catch (err) {\n        _didIteratorError = true;\n        _iteratorError = err;\n      } finally {\n        try {\n          if (!_iteratorNormalCompletion && _iterator.return) {\n            _iterator.return();\n          }\n        } finally {\n          if (_didIteratorError) {\n            throw _iteratorError;\n          }\n        }\n      }\n\n      return inject;\n    }\n  }, {\n    key: \"registerAlias\",\n    value: function registerAlias(target, alias) {\n      target = this._normalize(target);\n      var dependencies = this.resolveDependencies(target);\n      var instance = new (Function.prototype.bind.apply(alias, [null].concat(_toConsumableArray(dependencies))))();\n      this.registry.set(target, instance);\n    }\n  }, {\n    key: \"getOrCreateInstance\",\n    value: function getOrCreateInstance(target, dependencies) {\n      var instance = this.registry.get(target);\n      console.log(instance);\n      if (!instance) {\n        instance = new (Function.prototype.bind.apply(target, [null].concat(_toConsumableArray(dependencies))))();\n        console.log(target);\n        this.registry.set(target, instance);\n      }\n      return instance;\n    }\n  }, {\n    key: \"getDependencies\",\n    value: function getDependencies(target) {\n      if (!target.hasOwnProperty(\"_dependencies\")) return [];\n\n      return typeof target._dependencies === 'function' ? target._dependencies() : target._dependencies;\n    }\n  }, {\n    key: \"_normalize\",\n    value: function _normalize(target) {\n      switch (typeof target === \"undefined\" ? \"undefined\" : _typeof(target)) {\n        case \"string\":\n        //use loader to get thet module and import it;\n        case \"function\":\n          return target;\n        default:\n          throw new Error('Unable resolve dependency ' + target);\n      }\n    }\n  }]);\n\n  return Container;\n}();\n\nfunction depend() {\n  for (var _len = arguments.length, items = Array(_len), _key = 0; _key < _len; _key++) {\n    items[_key] = arguments[_key];\n  }\n\n  return function (target, key, desriptor) {\n    target._dependencies = items;\n  };\n}\n\n//# sourceURL=webpack:///./src/bw-dependency-injection/index.js?");
 
 /***/ }),
 
 /***/ "../../src/bw-initialize/index.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*!************************************!*\
+  !*** ./src/bw-initialize/index.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bw_webpack_loader__ = __webpack_require__("../../src/bw-webpack-loader/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_bw_client_router__ = __webpack_require__("../../src/bw-client-router/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bw_binding__ = __webpack_require__("../../src/bw-binding/index.js");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.Main = undefined;\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _bwWebpackLoader = __webpack_require__(/*! bw-webpack-loader */ \"../../src/bw-webpack-loader/index.js\");\n\nvar _bwLoader = __webpack_require__(/*! bw-loader */ \"../../src/bw-loader/index.js\");\n\nvar _bwClientRouter = __webpack_require__(/*! bw-client-router */ \"../../src/bw-client-router/index.js\");\n\nvar _bwTemplating = __webpack_require__(/*! bw-templating */ \"../../src/bw-templating/index.js\");\n\nvar _bwDependencyInjection = __webpack_require__(/*! bw-dependency-injection */ \"../../src/bw-dependency-injection/index.js\");\n\nvar _bwBinding = __webpack_require__(/*! bw-binding */ \"../../src/bw-binding/index.js\");\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar Bootstrapper = function () {\n  function Bootstrapper() {\n    var _this = this;\n\n    _classCallCheck(this, Bootstrapper);\n\n    this._configureLoadPromise = new Promise(function (resolve) {\n      _this._resolveLoadPromise = resolve;\n    });\n    this.checkState();\n  }\n\n  _createClass(Bootstrapper, [{\n    key: 'checkState',\n    value: function checkState() {\n      var _this2 = this;\n\n      if (window.document.readyState === 'complete') {\n        this._resolveLoadPromise();\n      } else {\n        window.document.addEventListener('DOMContentLoaded', function (e) {\n          return _this2.documentReady(e);\n        });\n        window.addEventListener('load', function (e) {\n          return _this2.documentReady(e);\n        });\n      }\n    }\n  }, {\n    key: 'documentReady',\n    value: function documentReady(event) {\n      var _this3 = this;\n\n      window.document.removeEventListener('DOMContentLoaded', function (e) {\n        return _this3.initialized(e);\n      });\n      window.removeEventListener('load', function (e) {\n        return _this3.initialized(e);\n      });\n      this._resolveLoadPromise();\n    }\n  }, {\n    key: 'ensureLoaded',\n    value: function ensureLoaded() {\n      return this._configureLoadPromise;\n    }\n  }]);\n\n  return Bootstrapper;\n}();\n\nvar bootstrap = new Bootstrapper();\n\nbootstrap.ensureLoaded().then(function () {\n  console.log('bootstrapping done');\n  var main = new Main();\n});\n\nvar Main = exports.Main = function () {\n  function Main() {\n    _classCallCheck(this, Main);\n\n    this.container = new _bwDependencyInjection.Container();\n    this.container.registerAlias(_bwLoader.Loader, _bwWebpackLoader.WebpackLoader);\n    this.element = document.querySelectorAll('body')[0];\n    this.templateCompiler = this.container.resolve(_bwTemplating.TemplateCompiler);\n\n    this.loader = this.container.resolve(_bwLoader.Loader);\n    this.router = new _bwClientRouter.Router(this.loader, this.templateCompiler, this.element);\n    this.loader.router = this.router;\n    this.createView(); // should the router just navigate to '/' instead?\n  }\n\n  _createClass(Main, [{\n    key: 'createView',\n    value: function createView() {\n      var _this4 = this;\n\n      this.loader.load(\"index\").then(function (content) {\n        console.log(content);\n        _this4.element.innerHTML = \"\";\n        var template = document.createElement('div');\n        template.innerHTML = content.view;\n        var view = template.firstElementChild;\n        _this4.element.appendChild(view);\n        _this4.element.firstChild.setAttribute(\"bw-view\", content.id);\n        _this4.router.binding.bindView(content.viewModel, view);\n      }).catch(function (error) {\n        console.log(error);\n      });\n    }\n  }]);\n\n  return Main;\n}();\n\n//# sourceURL=webpack:///./src/bw-initialize/index.js?");
 
+/***/ }),
 
+/***/ "../../src/bw-loader/index.js":
+/*!********************************!*\
+  !*** ./src/bw-loader/index.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-
-class Bootstrapper {
-  constructor() {
-    this._configureLoadPromise = new Promise(resolve => { this._resolveLoadPromise = resolve });
-    this.checkState()
-  }
-
-  checkState() {
-    if (window.document.readyState === 'complete') {
-      this._resolveLoadPromise();
-    } else {
-      window.document.addEventListener('DOMContentLoaded', e => this.documentReady(e))
-      window.addEventListener('load', e => this.documentReady(e));
-    }
-  }
-
-  documentReady(event) {
-    window.document.removeEventListener('DOMContentLoaded', e => this.initialized(e))
-    window.removeEventListener('load', e => this.initialized(e))
-    this._resolveLoadPromise()
-  }
-
-  ensureLoaded() {
-    return this._configureLoadPromise;
-  }
-}
-
-const bootstrap = new Bootstrapper();
-
-bootstrap.ensureLoaded()
-.then(() => {
-  console.log('bootstrapping done');
-  const main = new Main();
-})
-
-class Main {
-  constructor() {
-
-    this.element = document.querySelectorAll('body')[0];
-    console.log(this.element);
-    this.loader = new __WEBPACK_IMPORTED_MODULE_0_bw_webpack_loader__["a" /* Loader */]();
-    this.router = new __WEBPACK_IMPORTED_MODULE_1_bw_client_router__["a" /* Router */](this.loader, this.element);
-    this.loader.router = this.router;
-    this.createView(); // should the router just navigate to '/' instead?
-  }
-
-  createView() {
-    this.loader.load("index")
-    .then(content => {
-      console.log(content);
-      this.element.innerHTML = "";
-      let template = document.createElement('div')
-      template.innerHTML = content.view;
-      let view = template.firstElementChild;
-      this.element.appendChild(view)
-      this.element.firstChild.setAttribute("bw-view", content.id)
-      this.router.binding.bindView(content.viewModel, view)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-  }
-
-}
-/* harmony export (immutable) */ __webpack_exports__["Main"] = Main;
-
-
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar Loader = exports.Loader = function () {\n    function Loader() {\n        _classCallCheck(this, Loader);\n    }\n\n    _createClass(Loader, [{\n        key: 'findView',\n        value: function findView() {\n            throw Error('findView needs to be defined');\n        }\n    }, {\n        key: 'load',\n        value: function load(moduleId) {\n            throw Error('load needs to be defined');\n        }\n    }]);\n\n    return Loader;\n}();\n\n//# sourceURL=webpack:///./src/bw-loader/index.js?");
 
 /***/ }),
 
 /***/ "../../src/bw-router/index.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*!********************************!*\
+  !*** ./src/bw-router/index.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* unused harmony export route */
-class BaseRouter {
-  constructor(loader) {
-    this.routes = [];
-    this.loader = loader;
-  }
-
-  load(moduleId, routes) {
-    for (let route of routes) {
-      this.analyzePattern(route)
-      route.parent = moduleId;
-      this.routes.push(route);
-    }
-  }
-
-  analyzePattern(route) {
-    route.params = [];
-    let matches = route.pattern.match(/\?P<[A-Za-z_]+>/g);
-    if (matches) {
-      for (let m of matches) {
-        let match = m.match(/<([A-Za-z_]+)>/)
-        route.params.push(match[1]);
-      }
-    }
-    route.pattern = route.pattern.replace(/\?P<[A-Za-z_]+>/g, "");
-    route.re = new RegExp(route.pattern);
-  }
-
-  register(items) {
-    for (let item of items) {
-      item.re = new RegExp(item.pattern);
-      this.routes.push(item)
-    }
-  }
-
-  getRoutes() {
-    return this.routes;
-  }
-
-  findRoute(url) {
-    for (let route of this.routes) {
-      let found = url.match(route.re)
-      if (found) {
-        let params = {}
-        found.splice(0,1)
-        for (let x = 0; x < found.length; x++) {
-          params[route.params[x]] = found[x]
-        }
-        return {params: params, route: route};
-      }
-    }
-    return {params: undefined, route: undefined}
-  }
-
-  parseUrl(url, route) {
-    const re = /(\w+)/g;
-    let path = url.split('?')[0]
-
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = BaseRouter;
-
-
-function route(...items) {
-  return function(target, key, desriptor) {
-    target._route = items
-  }
-}
-
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nexports.route = route;\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar BaseRouter = exports.BaseRouter = function () {\n  function BaseRouter(loader) {\n    _classCallCheck(this, BaseRouter);\n\n    this.routes = [];\n    this.loader = loader;\n  }\n\n  _createClass(BaseRouter, [{\n    key: \"load\",\n    value: function load(moduleId, routes) {\n      var _iteratorNormalCompletion = true;\n      var _didIteratorError = false;\n      var _iteratorError = undefined;\n\n      try {\n        for (var _iterator = routes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {\n          var _route = _step.value;\n\n          this.analyzePattern(_route);\n          _route.parent = moduleId;\n          this.routes.push(_route);\n        }\n      } catch (err) {\n        _didIteratorError = true;\n        _iteratorError = err;\n      } finally {\n        try {\n          if (!_iteratorNormalCompletion && _iterator.return) {\n            _iterator.return();\n          }\n        } finally {\n          if (_didIteratorError) {\n            throw _iteratorError;\n          }\n        }\n      }\n    }\n  }, {\n    key: \"analyzePattern\",\n    value: function analyzePattern(route) {\n      route.params = [];\n      var matches = route.pattern.match(/\\?P<[A-Za-z_]+>/g);\n      if (matches) {\n        var _iteratorNormalCompletion2 = true;\n        var _didIteratorError2 = false;\n        var _iteratorError2 = undefined;\n\n        try {\n          for (var _iterator2 = matches[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {\n            var m = _step2.value;\n\n            var match = m.match(/<([A-Za-z_]+)>/);\n            route.params.push(match[1]);\n          }\n        } catch (err) {\n          _didIteratorError2 = true;\n          _iteratorError2 = err;\n        } finally {\n          try {\n            if (!_iteratorNormalCompletion2 && _iterator2.return) {\n              _iterator2.return();\n            }\n          } finally {\n            if (_didIteratorError2) {\n              throw _iteratorError2;\n            }\n          }\n        }\n      }\n      route.pattern = route.pattern.replace(/\\?P<[A-Za-z_]+>/g, \"\");\n      route.re = new RegExp(route.pattern);\n    }\n  }, {\n    key: \"register\",\n    value: function register(items) {\n      var _iteratorNormalCompletion3 = true;\n      var _didIteratorError3 = false;\n      var _iteratorError3 = undefined;\n\n      try {\n        for (var _iterator3 = items[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {\n          var item = _step3.value;\n\n          item.re = new RegExp(item.pattern);\n          this.routes.push(item);\n        }\n      } catch (err) {\n        _didIteratorError3 = true;\n        _iteratorError3 = err;\n      } finally {\n        try {\n          if (!_iteratorNormalCompletion3 && _iterator3.return) {\n            _iterator3.return();\n          }\n        } finally {\n          if (_didIteratorError3) {\n            throw _iteratorError3;\n          }\n        }\n      }\n    }\n  }, {\n    key: \"getRoutes\",\n    value: function getRoutes() {\n      return this.routes;\n    }\n  }, {\n    key: \"findRoute\",\n    value: function findRoute(url) {\n      var _iteratorNormalCompletion4 = true;\n      var _didIteratorError4 = false;\n      var _iteratorError4 = undefined;\n\n      try {\n        for (var _iterator4 = this.routes[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {\n          var _route2 = _step4.value;\n\n          var found = url.match(_route2.re);\n          if (found) {\n            var params = {};\n            found.splice(0, 1);\n            for (var x = 0; x < found.length; x++) {\n              params[_route2.params[x]] = found[x];\n            }\n            return { params: params, route: _route2 };\n          }\n        }\n      } catch (err) {\n        _didIteratorError4 = true;\n        _iteratorError4 = err;\n      } finally {\n        try {\n          if (!_iteratorNormalCompletion4 && _iterator4.return) {\n            _iterator4.return();\n          }\n        } finally {\n          if (_didIteratorError4) {\n            throw _iteratorError4;\n          }\n        }\n      }\n\n      return { params: undefined, route: undefined };\n    }\n  }, {\n    key: \"parseUrl\",\n    value: function parseUrl(url, route) {\n      var re = /(\\w+)/g;\n      var path = url.split('?')[0];\n    }\n  }]);\n\n  return BaseRouter;\n}();\n\nfunction route() {\n  for (var _len = arguments.length, items = Array(_len), _key = 0; _key < _len; _key++) {\n    items[_key] = arguments[_key];\n  }\n\n  return function (target, key, desriptor) {\n    target._route = items;\n  };\n}\n\n//# sourceURL=webpack:///./src/bw-router/index.js?");
 
 /***/ }),
 
 /***/ "../../src/bw-templating/index.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*!************************************!*\
+  !*** ./src/bw-templating/index.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__template_compiler__ = __webpack_require__("../../src/bw-templating/template-compiler.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__template_compiler__["a"]; });
-
-
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _templateCompiler = __webpack_require__(/*! ./template-compiler */ \"../../src/bw-templating/template-compiler.js\");\n\nObject.defineProperty(exports, 'TemplateCompiler', {\n  enumerable: true,\n  get: function get() {\n    return _templateCompiler.TemplateCompiler;\n  }\n});\n\n//# sourceURL=webpack:///./src/bw-templating/index.js?");
 
 /***/ }),
 
 /***/ "../../src/bw-templating/template-compiler.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*!************************************************!*\
+  !*** ./src/bw-templating/template-compiler.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bw_binding__ = __webpack_require__("../../src/bw-binding/index.js");
-
-class TemplateCompiler {
-  constructor() {
-    this.parser = new __WEBPACK_IMPORTED_MODULE_0_bw_binding__["b" /* Parser */]();
-    this.bindings = new __WEBPACK_IMPORTED_MODULE_0_bw_binding__["c" /* BindingCollection */]();
-  }
-
-  processNode(context, node) {
-    if (node.nodeType === 3) {
-      if (node.textContent.length > 3) {
-        let parts = node.textContent.split("${");
-        let results = [];
-        for (let i = 1; i < parts.length; i++) {
-          let curly = 1;
-          let text = parts[i];
-          let quote = null;
-          let length = text.lastIndexOf("}");
-          if (length > -1) {
-            for (let x = 0; x <= length; x++) {
-              let char = text.charCodeAt(x);
-              if (char === 39 || char === 34) {
-                if (quote === null)
-                  quote = char;
-                else if (quote === char)
-                  quote = null;
-                continue;
-              }
-              if (quote !== null)
-                continue;
-
-              if (char === 123)
-                curly++;
-              if (char === 125)
-                curly--;
-
-              if (curly === 0)
-                length = x;
-            }
-            if (curly === 0 && quote === null && length > 0) {
-              let r = text.substring(0, length)
-              let expression = this.parser.parse(r);
-              let binding = this.bindings.find(expression, context)
-              if (!binding)
-                binding = this.bindings.add(new __WEBPACK_IMPORTED_MODULE_0_bw_binding__["d" /* BindingContext */](expression, context));
-              binding.addObserver(new __WEBPACK_IMPORTED_MODULE_0_bw_binding__["e" /* BindingObserver */](node, "textContent"));
-              let value = binding.evaluate();
-              if (value !== undefined) {
-                node.textContent = node.textContent.replace("${" + r + "}", value);
-                node.parentNode.setAttribute("text-content:bind", r);
-              }
-            }
-          }
-        }
-      }
-    }
-
-    if (node.nodeType < 3 && node.hasAttributes()) {
-      for (let a of node.attributes) {
-        let bindingAttr = a.name.split(':')
-        if (bindingAttr.length > 1) {
-          let attr = bindingAttr[0].toCamel();
-          let method = bindingAttr[1];
-          let expr = a.value;
-          let expression = this.parser.parse(expr);
-          let binding = this.bindings.find(expression, context)
-
-          if (!binding)
-            binding = this.bindings.add(new __WEBPACK_IMPORTED_MODULE_0_bw_binding__["d" /* BindingContext */](expression, context));
-
-          binding.addObserver(new __WEBPACK_IMPORTED_MODULE_0_bw_binding__["e" /* BindingObserver */](node, attr));
-          if (attr === "value" || attr === "textContent")
-            node[attr] = binding.evaluate(context)
-          else
-            node.setAttribute(attr, binding.evaluate(context));
-
-          if (node.tagName.toLowerCase() === "input") {
-            let listener = e => {
-              binding.assign(node.value)
-            }
-            node.addEventListener("change", listener)
-            node.addEventListener("input", listener)
-          }
-        }
-      }
-    }
-    if (node.hasChildNodes()) {
-      for (let n of node.childNodes) {
-        this.processNode(context, n)
-      }
-    }
-  }
-
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = TemplateCompiler;
-
-if (typeof String.prototype.toCamel !== 'function') {
-  String.prototype.toCamel = function(){
-    return this.replace(/[-]([a-z])/g, function (g) { return g[1].toUpperCase(); })
-  };
-}
-
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\nexports.TemplateCompiler = undefined;\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _dec, _class;\n\nvar _bwBinding = __webpack_require__(/*! bw-binding */ \"../../src/bw-binding/index.js\");\n\nvar _bwComponent = __webpack_require__(/*! bw-component */ \"../../src/bw-component/index.js\");\n\nvar _bwLoader = __webpack_require__(/*! bw-loader */ \"../../src/bw-loader/index.js\");\n\nvar _bwDependencyInjection = __webpack_require__(/*! bw-dependency-injection */ \"../../src/bw-dependency-injection/index.js\");\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar TemplateCompiler = exports.TemplateCompiler = (_dec = (0, _bwDependencyInjection.depend)(_bwComponent.HtmlComponent, _bwLoader.Loader), _dec(_class = function () {\n    function TemplateCompiler(htmlComponent, loader) {\n        _classCallCheck(this, TemplateCompiler);\n\n        this.parser = new _bwBinding.Parser();\n        this.bindings = new _bwBinding.BindingCollection();\n        this.htmlComponent = htmlComponent;\n        this.loader = loader;\n        console.log(this.loader);\n    }\n\n    _createClass(TemplateCompiler, [{\n        key: \"compileComponent\",\n        value: function compileComponent(node) {\n            var _this = this;\n\n            this.loader.load(view).then(function (content) {\n                var index = _this.loader.modules.findIndex(function (i) {\n                    return i.moduleId === route.parent;\n                });\n                var element = document.querySelectorAll(\"view[router]\")[index];\n                if (content.view && element) {\n                    var _view = _this.bindView(content);\n                }\n            });\n        }\n    }, {\n        key: \"processNode\",\n        value: function processNode(context, node) {\n            var _this2 = this;\n\n            var component = _bwComponent.HtmlComponent.list.find(function (i) {\n                return i.name.toUpperCase() === node.tagName;\n            });\n            if (component) {\n                var t = this.loader.findView(component);\n                console.log(t);\n            }\n            if (node.nodeType === 3) {\n                if (node.textContent.length > 3) {\n                    var parts = node.textContent.split(\"${\");\n                    var results = [];\n                    for (var i = 1; i < parts.length; i++) {\n                        var curly = 1;\n                        var text = parts[i];\n                        var quote = null;\n                        var length = text.lastIndexOf(\"}\");\n                        if (length > -1) {\n                            for (var x = 0; x <= length; x++) {\n                                var char = text.charCodeAt(x);\n                                if (char === 39 || char === 34) {\n                                    if (quote === null) quote = char;else if (quote === char) quote = null;\n                                    continue;\n                                }\n                                if (quote !== null) continue;\n\n                                if (char === 123) curly++;\n                                if (char === 125) curly--;\n\n                                if (curly === 0) length = x;\n                            }\n                            if (curly === 0 && quote === null && length > 0) {\n                                var r = text.substring(0, length);\n                                var expression = this.parser.parse(r);\n                                var binding = this.bindings.find(expression, context);\n                                if (!binding) binding = this.bindings.add(new _bwBinding.BindingContext(expression, context));\n                                binding.addObserver(new _bwBinding.BindingObserver(node, \"textContent\"));\n                                var value = binding.evaluate();\n                                if (value !== undefined) {\n                                    node.textContent = node.textContent.replace(\"${\" + r + \"}\", value);\n                                    node.parentNode.setAttribute(\"text-content:bind\", r);\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n\n            if (node.nodeType < 3 && node.hasAttributes()) {\n                var _iteratorNormalCompletion = true;\n                var _didIteratorError = false;\n                var _iteratorError = undefined;\n\n                try {\n                    for (var _iterator = node.attributes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {\n                        var a = _step.value;\n\n                        var bindingAttr = a.name.split(':');\n                        if (bindingAttr.length > 1) {\n                            (function () {\n                                var attr = bindingAttr[0].toCamel();\n                                var method = bindingAttr[1];\n                                var expr = a.value;\n                                var expression = _this2.parser.parse(expr);\n                                var binding = _this2.bindings.find(expression, context);\n\n                                if (!binding) binding = _this2.bindings.add(new _bwBinding.BindingContext(expression, context));\n\n                                binding.addObserver(new _bwBinding.BindingObserver(node, attr));\n                                if (attr === \"value\" || attr === \"textContent\") node[attr] = binding.evaluate(context);else node.setAttribute(attr, binding.evaluate(context));\n\n                                if (node.tagName.toLowerCase() === \"input\") {\n                                    var listener = function listener(e) {\n                                        binding.assign(node.value);\n                                    };\n                                    node.addEventListener(\"change\", listener);\n                                    node.addEventListener(\"input\", listener);\n                                }\n                            })();\n                        }\n                    }\n                } catch (err) {\n                    _didIteratorError = true;\n                    _iteratorError = err;\n                } finally {\n                    try {\n                        if (!_iteratorNormalCompletion && _iterator.return) {\n                            _iterator.return();\n                        }\n                    } finally {\n                        if (_didIteratorError) {\n                            throw _iteratorError;\n                        }\n                    }\n                }\n            }\n            if (node.hasChildNodes()) {\n                var _iteratorNormalCompletion2 = true;\n                var _didIteratorError2 = false;\n                var _iteratorError2 = undefined;\n\n                try {\n                    for (var _iterator2 = node.childNodes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {\n                        var n = _step2.value;\n\n                        this.processNode(context, n);\n                    }\n                } catch (err) {\n                    _didIteratorError2 = true;\n                    _iteratorError2 = err;\n                } finally {\n                    try {\n                        if (!_iteratorNormalCompletion2 && _iterator2.return) {\n                            _iterator2.return();\n                        }\n                    } finally {\n                        if (_didIteratorError2) {\n                            throw _iteratorError2;\n                        }\n                    }\n                }\n            }\n        }\n    }]);\n\n    return TemplateCompiler;\n}()) || _class);\n\n\nif (typeof String.prototype.toCamel !== 'function') {\n    String.prototype.toCamel = function () {\n        return this.replace(/[-]([a-z])/g, function (g) {\n            return g[1].toUpperCase();\n        });\n    };\n}\n\n//# sourceURL=webpack:///./src/bw-templating/template-compiler.js?");
 
 /***/ }),
 
 /***/ "../../src/bw-webpack-loader/index.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*!****************************************!*\
+  !*** ./src/bw-webpack-loader/index.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-class Loader {
-  constructor() {
-    this.modules = []
-  }
-
-  load(moduleId) {
-    console.log(moduleId);
-    let found = this.modules.filter(i => i.moduleId === moduleId)[0];
-    console.log(__webpack_require__.m);
-    if (found) {
-      return Promise.resolve(found);
-    }
-
-    else if (__webpack_require__.m[moduleId + '.js']) {
-      let module = __webpack_require__(moduleId + ".js");
-      if (typeof module === 'object') {
-        for (let key in module) {
-          let exported = module[key];
-          if (typeof exported === "function") {
-            let view;
-            if (__webpack_require__.m[moduleId + '.html']) {
-              view = __webpack_require__(moduleId + ".html")
-              //let template = document.createElement('div')
-              //template.innerHTML = html;
-              //view = template.firstElementChild;
-            }
-            let item = new module[key]();
-            let id = this.modules.length;
-            let content = {moduleId: moduleId, view: view, id: id, viewModel: item};
-            if ('loadRouter' in item && 'router' in this) {
-              this.router.load(moduleId, item.loadRouter())
-            }
-            this.modules.push(content);
-            console.debug("Loaded module: " + moduleId + ".js" + (content.view ? " and " + moduleId + ".html" : ""));
-
-            return Promise.resolve(content);
-          }
-        }
-      }
-    } else {
-      return Promise.reject("not found: " + moduleId);
-    }
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Loader;
-
-
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _typeof = typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; };\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar WebpackLoader = exports.WebpackLoader = function () {\n  function WebpackLoader() {\n    _classCallCheck(this, WebpackLoader);\n\n    this.modules = [];\n  }\n\n  _createClass(WebpackLoader, [{\n    key: 'findView',\n    value: function findView(component) {\n      var found = this.modules.find(function (i) {\n        return i.viewModel === component.target;\n      });\n      console.log(component);\n      if (found) return found;\n      var keys = Object.keys(__webpack_require__.m).filter(function (i) {\n        return i.slice(-3) === '.js';\n      });\n      console.log(keys);\n      var _iteratorNormalCompletion = true;\n      var _didIteratorError = false;\n      var _iteratorError = undefined;\n\n      try {\n        for (var _iterator = keys[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {\n          var key = _step.value;\n\n          var module = __webpack_require__(key);\n          console.log(module);\n          if (module.hasOwnProperty(component.name) && module[component.name] === component.target) {\n            console.log('we found it');\n            return key;\n          }\n        }\n      } catch (err) {\n        _didIteratorError = true;\n        _iteratorError = err;\n      } finally {\n        try {\n          if (!_iteratorNormalCompletion && _iterator.return) {\n            _iterator.return();\n          }\n        } finally {\n          if (_didIteratorError) {\n            throw _iteratorError;\n          }\n        }\n      }\n    }\n  }, {\n    key: 'load',\n    value: function load(moduleId) {\n      var found = this.modules.filter(function (i) {\n        return i.moduleId === moduleId;\n      })[0];\n      console.log(__webpack_require__);\n      if (found) {\n        return Promise.resolve(found);\n      } else if (__webpack_require__.m[moduleId + '.js']) {\n        var module = __webpack_require__(moduleId + \".js\");\n        if ((typeof module === 'undefined' ? 'undefined' : _typeof(module)) === 'object') {\n          for (var key in module) {\n            var exported = module[key];\n            if (typeof exported === \"function\") {\n              var view = void 0;\n              if (__webpack_require__.m[moduleId + '.html']) {\n                view = __webpack_require__(moduleId + \".html\");\n              }\n              var item = new module[key]();\n              var id = this.modules.length;\n              var content = { moduleId: moduleId, view: view, id: id, viewModel: item };\n              if ('loadRouter' in item && 'router' in this) {\n                this.router.load(moduleId, item.loadRouter());\n              }\n              this.modules.push(content);\n              console.debug(\"Loaded module: \" + moduleId + \".js\" + (content.view ? \" and \" + moduleId + \".html\" : \"\"));\n\n              return Promise.resolve(content);\n            }\n          }\n        }\n      } else {\n        return Promise.reject(\"not found: \" + moduleId);\n      }\n    }\n  }]);\n\n  return WebpackLoader;\n}();\n\n//# sourceURL=webpack:///./src/bw-webpack-loader/index.js?");
 
 /***/ }),
 
-/***/ 4:
+/***/ "./example/src sync recursive ^\\.\\/":
+/*!********************************!*\
+  !*** ./example/src sync ^\.\/ ***!
+  \********************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-var map = {
-	"./home": "home.js",
-	"./home.html": "home.html",
-	"./home.js": "home.js",
-	"./index": "index.js",
-	"./index.html": "index.html",
-	"./index.js": "index.js",
-	"./main": "main.js",
-	"./main.js": "main.js"
-};
-function webpackContext(req) {
-	return __webpack_require__(webpackContextResolve(req));
-};
-function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) // check for number or string
-		throw new Error("Cannot find module '" + req + "'.");
-	return id;
-};
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = 4;
+eval("var map = {\n\t\"./\": \"index.js\",\n\t\"./home\": \"home.js\",\n\t\"./home.html\": \"home.html\",\n\t\"./home.js\": \"home.js\",\n\t\"./index\": \"index.js\",\n\t\"./index.html\": \"index.html\",\n\t\"./index.js\": \"index.js\",\n\t\"./main\": \"main.js\",\n\t\"./main.js\": \"main.js\",\n\t\"./unknown-tag\": \"unknown-tag.js\",\n\t\"./unknown-tag.html\": \"unknown-tag.html\",\n\t\"./unknown-tag.js\": \"unknown-tag.js\"\n};\n\n\nfunction webpackContext(req) {\n\tvar id = webpackContextResolve(req);\n\tvar module = __webpack_require__(id);\n\treturn module;\n}\nfunction webpackContextResolve(req) {\n\tvar id = map[req];\n\tif(!(id + 1)) { // check for number or string\n\t\tvar e = new Error('Cannot find module \"' + req + '\".');\n\t\te.code = 'MODULE_NOT_FOUND';\n\t\tthrow e;\n\t}\n\treturn id;\n}\nwebpackContext.keys = function webpackContextKeys() {\n\treturn Object.keys(map);\n};\nwebpackContext.resolve = webpackContextResolve;\nmodule.exports = webpackContext;\nwebpackContext.id = \"./example/src sync recursive ^\\\\.\\\\/\";\n\n//# sourceURL=webpack:///./example/src_sync_^\\.\\/?");
 
 /***/ }),
 
 /***/ "home.html":
+/*!*******************************!*\
+  !*** ./example/src/home.html ***!
+  \*******************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"mdl-cell mdl-cell--12-col\">\n  <h1>${input}</h1>\n  <input value:bind=\"input\">\n</div>\n";
+eval("module.exports = \"<div class=\\\"mdl-cell mdl-cell--12-col\\\">\\n  <h1>${input}</h1>\\n  <input value:bind=\\\"input\\\">\\n  <UnknownTag></UnknownTag>\\n</div>\\n\";\n\n//# sourceURL=webpack:///./example/src/home.html?");
 
 /***/ }),
 
 /***/ "home.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*!*****************************!*\
+  !*** ./example/src/home.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-class Test {
-  constructor() {
-    this.message = "Home"
-    this.input = "Input"
-    console.log('Home ViewModel')
-    this.message = {"test": "Awesome", "testa": "Better"}
-    this.test = {"test": {"sub": "Tester"}}
-    this.testTwo= {"test": {"test": {"sub": "deep"}}}
-    this.testStrigng = "test";
-
-
-  }
-
-  callme(v) {
-    console.log(v)
-    console.log('ok')
-    return v
-  }
-
-
-}
-/* harmony export (immutable) */ __webpack_exports__["Test"] = Test;
-
-
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.Test = undefined;\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _unknownTag = __webpack_require__(/*! ./unknown-tag */ \"unknown-tag.js\");\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar Test = exports.Test = function () {\n  function Test() {\n    _classCallCheck(this, Test);\n\n    this.message = \"Home\";\n    this.input = \"Input\";\n    console.log('Home ViewModel');\n    this.message = { \"test\": \"Awesome\", \"testa\": \"Better\" };\n    this.test = { \"test\": { \"sub\": \"Tester\" } };\n    this.testTwo = { \"test\": { \"test\": { \"sub\": \"deep\" } } };\n    this.testStrigng = \"test\";\n    this.unknownTag = new _unknownTag.UnknownTag();\n  }\n\n  _createClass(Test, [{\n    key: \"callme\",\n    value: function callme(v) {\n      console.log(v);\n      console.log('ok');\n      return v;\n    }\n  }]);\n\n  return Test;\n}();\n\n//# sourceURL=webpack:///./example/src/home.js?");
 
 /***/ }),
 
 /***/ "index.html":
+/*!********************************!*\
+  !*** ./example/src/index.html ***!
+  \********************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"mdl-layout mdl-js-layout mdl-layout--fixed-drawer\n            mdl-layout--fixed-header\">\n  <header class=\"mdl-layout__header\">\n    <div class=\"mdl-layout__header-row\">\n      <div class=\"mdl-layout-spacer\"></div>\n      <div class=\"mdl-textfield mdl-js-textfield mdl-textfield--expandable\n                  mdl-textfield--floating-label mdl-textfield--align-right\">\n        <label class=\"mdl-button mdl-js-button mdl-button--icon\"\n               for=\"fixed-header-drawer-exp\">\n          <i class=\"material-icons\">search</i>\n        </label>\n        <div class=\"mdl-textfield__expandable-holder\">\n          <input class=\"mdl-textfield__input\" type=\"text\" name=\"sample\"\n                 id=\"fixed-header-drawer-exp\">\n        </div>\n      </div>\n    </div>\n  </header>\n  <div class=\"mdl-layout__drawer\">\n    <span class=\"mdl-layout-title\">Router Sample</span>\n    <nav class=\"mdl-navigation\">\n      <a class=\"mdl-navigation__link\" href=\"/\">Index</a>\n      <a class=\"mdl-navigation__link\" href=\"/home/1234\">home</a>\n    </nav>\n  </div>\n  <main class=\"mdl-layout__content mdl-color--grey-100\">\n    <h1>Index</h1>\n    <p>${test}</p>\n    <input value:bind=\"test\" value=\"haha\">\n    <div class=\"page-content\">\n      <view router class=\"mdl-grid\"></view>\n    </div>\n  </main>\n</div>\n";
+eval("module.exports = \"<div class=\\\"mdl-layout mdl-js-layout mdl-layout--fixed-drawer\\n            mdl-layout--fixed-header\\\">\\n  <header class=\\\"mdl-layout__header\\\">\\n    <div class=\\\"mdl-layout__header-row\\\">\\n      <div class=\\\"mdl-layout-spacer\\\"></div>\\n      <div class=\\\"mdl-textfield mdl-js-textfield mdl-textfield--expandable\\n                  mdl-textfield--floating-label mdl-textfield--align-right\\\">\\n        <label class=\\\"mdl-button mdl-js-button mdl-button--icon\\\"\\n               for=\\\"fixed-header-drawer-exp\\\">\\n          <i class=\\\"material-icons\\\">search</i>\\n        </label>\\n        <div class=\\\"mdl-textfield__expandable-holder\\\">\\n          <input class=\\\"mdl-textfield__input\\\" type=\\\"text\\\" name=\\\"sample\\\"\\n                 id=\\\"fixed-header-drawer-exp\\\">\\n        </div>\\n      </div>\\n    </div>\\n  </header>\\n  <div class=\\\"mdl-layout__drawer\\\">\\n    <span class=\\\"mdl-layout-title\\\">Router Sample</span>\\n    <nav class=\\\"mdl-navigation\\\">\\n      <a class=\\\"mdl-navigation__link\\\" href=\\\"/\\\">Index</a>\\n      <a class=\\\"mdl-navigation__link\\\" href=\\\"/home/1234\\\">home</a>\\n    </nav>\\n  </div>\\n  <main class=\\\"mdl-layout__content mdl-color--grey-100\\\">\\n    <h1>Index</h1>\\n    <p>${test}</p>\\n    <input value:bind=\\\"test\\\" value=\\\"haha\\\">\\n    <div class=\\\"page-content\\\">\\n      <view router class=\\\"mdl-grid\\\"></view>\\n    </div>\\n  </main>\\n</div>\\n\";\n\n//# sourceURL=webpack:///./example/src/index.html?");
 
 /***/ }),
 
 /***/ "index.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*!******************************!*\
+  !*** ./example/src/index.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//import 'baseworks-initialize/index.js';
-
-
-//require('../../src/baseworks-initialize/initialize.js');
-
-class Index {
-  constructor() {
-    this.test = "wooop";
-    window.baseworks = this;
-  }
-
-  loadRouter() {
-    return [
-      {pattern: "/home\/(?P<id>\\d+)", view: "home"},
-    ];
-
-  }
-
-}
-/* harmony export (immutable) */ __webpack_exports__["Index"] = Index;
-
-
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\n//import 'baseworks-initialize/index.js';\n\n\n//require('../../src/baseworks-initialize/initialize.js');\n\nvar Index = exports.Index = function () {\n  function Index() {\n    _classCallCheck(this, Index);\n\n    this.test = \"wooop\";\n    window.baseworks = this;\n  }\n\n  _createClass(Index, [{\n    key: \"loadRouter\",\n    value: function loadRouter() {\n      return [{ pattern: \"/home\\/(?P<id>\\\\d+)\", view: \"home\" }];\n    }\n  }]);\n\n  return Index;\n}();\n\n//# sourceURL=webpack:///./example/src/index.js?");
 
 /***/ }),
 
 /***/ "main.js":
+/*!*****************************!*\
+  !*** ./example/src/main.js ***!
+  \*****************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__("../../src/bw-initialize/index.js");
-__webpack_require__(4); //loads all files in the src folder.
+"use strict";
+eval("\n\n__webpack_require__(/*! bw-initialize/index.js */ \"../../src/bw-initialize/index.js\");\n__webpack_require__(\"./example/src sync recursive ^\\\\.\\\\/\"); //loads all files in the src folder.\n\n//# sourceURL=webpack:///./example/src/main.js?");
 
+/***/ }),
+
+/***/ "unknown-tag.html":
+/*!**************************************!*\
+  !*** ./example/src/unknown-tag.html ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = \"<div>\\n    <p>Works!</p>\\n</div>\";\n\n//# sourceURL=webpack:///./example/src/unknown-tag.html?");
+
+/***/ }),
+
+/***/ "unknown-tag.js":
+/*!************************************!*\
+  !*** ./example/src/unknown-tag.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\nexports.UnknownTag = undefined;\n\nvar _dec, _class;\n\nvar _bwComponent = __webpack_require__(/*! bw-component */ \"../../src/bw-component/index.js\");\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar UnknownTag = exports.UnknownTag = (_dec = (0, _bwComponent.component)(), _dec(_class = function UnknownTag() {\n    _classCallCheck(this, UnknownTag);\n\n    console.log(this);\n}) || _class);\n\n//# sourceURL=webpack:///./example/src/unknown-tag.js?");
 
 /***/ })
 
