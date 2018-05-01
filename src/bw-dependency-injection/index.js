@@ -4,18 +4,29 @@ export class Container {
   }
   resolve(target) {
     target = this._normalize(target);
+    const dependencies = this.resolveDependencies(target);
+    return this.getOrCreateInstance(target, dependencies);
+  }
+  resolveDependencies(target) {
     let dependencies = this.getDependencies(target);
-    let inject = []
+    let inject = [];
     for (let d of dependencies) {
       inject.push(this.resolve(d))
     }
-    return this.getOrCreateInstance(target, inject)
-
+    return inject;
+  }
+  registerAlias(target, alias) {
+    target = this._normalize(target);
+    const dependencies = this.resolveDependencies(target);
+    const instance = new alias(...dependencies);
+    this.registry.set(target, instance);
   }
   getOrCreateInstance(target, dependencies) {
     let instance = this.registry.get(target);
+    console.log(instance)
     if (!instance) {
-      instance = new target(...dependencies)
+      instance = new target(...dependencies);
+      console.log(target);
       this.registry.set(target, instance)
     }
     return instance;
@@ -34,7 +45,7 @@ export class Container {
       case "function":
         return target;
       default:
-        throw new Error('Unable resolve dependancy ' +target)
+        throw new Error('Unable resolve dependency ' +target)
     }
   }
 }
