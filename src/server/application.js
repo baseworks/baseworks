@@ -4,8 +4,8 @@ import { Router } from './router';
 import { NodeLoader, FileLoader } from 'bw-node-loader';
 import { Loader } from 'bw-loader';
 import { TemplateCompiler } from 'bw-templating';
-import { Container, depend } from 'bw-dependency-injection'
-import { JSDOM } from 'jsdom';
+import { Container } from 'bw-dependency-injection'
+
 global.window = {}
 /*
 
@@ -36,7 +36,6 @@ export class App {
        this.container.registerAlias(Loader, NodeLoader);
     this.router = this.container.resolve(Router);
     this.router.url = '/';
-
     this.loader = this.container.resolve(Loader);
     this.loader.router = this.router;
     this.fileLoader = new FileLoader();
@@ -92,7 +91,6 @@ export class App {
       this.loader.load({path, loadViewModal: true})
       .then(content => {
         let element = this.document.querySelectorAll('view')[0];
-        console.log(element);
         let div = this.document.createElement('div');
         div.appendChild(content.view);
         this.templateCompiler.processNode(content.viewModel, div);
