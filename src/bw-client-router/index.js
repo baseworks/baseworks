@@ -1,21 +1,26 @@
 import { BaseRouter } from 'bw-router';
 import { BindingService } from 'bw-binding';
+import { Loader } from 'bw-loader';
+import { depend } from 'bw-dependency-injection';
+
+
+@depend(Loader, BindingService)
 export class Router extends BaseRouter {
-  constructor(loader, templateCompiler, element) {
+  constructor(loader, bindingService) {
     super(loader);
     this.currentState = {route: {pattern: "/", parent: null, view: "index"}, url: "/"};
-    this.binding = new BindingService(templateCompiler);
+    this.binding = bindingService;
     this.history = window.history;
-    this.element = element;
     this.loader = loader;
-
     this.isRouting = false;
     window.addEventListener('popstate', this.popstate.bind(this));
     window.addEventListener('click', this.handleLink.bind(this), true);
 
     window.history.replaceState(this.currentState, "", "/");
   }
-
+  setElement(element) {
+    this.element = element;
+  }
   switchView(element, view) {
     element.innerHTML = "";
     element.appendChild(view);
