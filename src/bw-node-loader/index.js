@@ -25,7 +25,6 @@ export class NodeLoader {
                 if (typeof exported === "function") {
                   content.viewModel = new exported();
                 }
-                console.log(key);
               }
             }
             if ('loadRouter' in content.viewModel && 'router' in this) {
