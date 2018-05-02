@@ -1,34 +1,28 @@
-import {BindingCollection, BindingContext, BindingObserver, Parser} from 'bw-binding';
 import {HtmlComponent} from "bw-component";
 import {Loader} from "bw-loader";
 import {depend} from "bw-dependency-injection";
+import {BindingCollection} from "bw-binding/binding";
+import {BindingContext, BindingObserver, Parser} from 'bw-binding';
 
-@depend(HtmlComponent, Loader)
+@depend(Loader, BindingCollection)
 export class TemplateCompiler {
-    constructor(htmlComponent, loader) {
+    constructor(loader, bindingCollection) {
         this.parser = new Parser();
-        this.bindings = new BindingCollection();
-        this.htmlComponent = htmlComponent;
+        this.bindings = bindingCollection;
         this.loader = loader;
-        console.log(this.loader)
     }
-    compileComponent(node) {
+    compileComponent(context, node, content) {
+        let template = document.createElement('div');
+        template.innerHTML = content.view;
+        let view = template.firstElementChild;
+        this.processNode(content.viewModel, view);
+        this.bindings.filterByContext(context);
 
-        this.loader.load(view)
-      .then(content => {
-          let index = this.loader.modules.findIndex(i => i.moduleId === route.parent)
-          let element = document.querySelectorAll("view[router]")[index];
-          if (content.view && element) {
-              let view = this.bindView(content)
-          }
-      });
+        node.innerHTML = '';
+        node.appendChild(view);
     }
+
     processNode(context, node) {
-        const component = HtmlComponent.list.find(i => i.name.toUpperCase() === node.tagName)
-        if (component) {
-           const t = this.loader.findView(component)
-           console.log(t)
-        }
         if (node.nodeType === 3) {
             if (node.textContent.length > 3) {
                 let parts = node.textContent.split("${");
@@ -60,9 +54,9 @@ export class TemplateCompiler {
                                 length = x;
                         }
                         if (curly === 0 && quote === null && length > 0) {
-                            let r = text.substring(0, length)
+                            let r = text.substring(0, length);
                             let expression = this.parser.parse(r);
-                            let binding = this.bindings.find(expression, context)
+                            let binding = this.bindings.find(expression, context);
                             if (!binding)
                                 binding = this.bindings.add(new BindingContext(expression, context));
                             binding.addObserver(new BindingObserver(node, "textContent"));
@@ -79,38 +73,44 @@ export class TemplateCompiler {
 
         if (node.nodeType < 3 && node.hasAttributes()) {
             for (let a of node.attributes) {
-                let bindingAttr = a.name.split(':')
+                let bindingAttr = a.name.split(':');
                 if (bindingAttr.length > 1) {
                     let attr = bindingAttr[0].toCamel();
                     let method = bindingAttr[1];
                     let expr = a.value;
                     let expression = this.parser.parse(expr);
-                    let binding = this.bindings.find(expression, context)
+                    let binding = this.bindings.find(expression, context);
 
                     if (!binding)
                         binding = this.bindings.add(new BindingContext(expression, context));
 
                     binding.addObserver(new BindingObserver(node, attr));
                     if (attr === "value" || attr === "textContent")
-                        node[attr] = binding.evaluate(context)
+                        node[attr] = binding.evaluate(context);
                     else
                         node.setAttribute(attr, binding.evaluate(context));
 
                     if (node.tagName.toLowerCase() === "input") {
                         let listener = e => {
                             binding.assign(node.value)
-                        }
-                        node.addEventListener("change", listener)
+                        };
+                        node.addEventListener("change", listener);
                         node.addEventListener("input", listener)
                     }
                 }
             }
         }
-        if (node.hasChildNodes()) {
+        const component = HtmlComponent.list.find(i => i.name.toUpperCase() === node.tagName);
+        if (component) {
+           this.loader.findView(component)
+               .then(content => this.compileComponent(context, node, content));
+
+        } else if (node.hasChildNodes()) {
             for (let n of node.childNodes) {
                 this.processNode(context, n)
             }
         }
+
     }
 
 }
