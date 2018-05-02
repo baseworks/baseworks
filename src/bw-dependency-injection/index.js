@@ -23,7 +23,7 @@ export class Container {
   }
   getOrCreateInstance(target, dependencies) {
     let instance = this.registry.get(target);
-    console.log(instance)
+
     if (!instance) {
       instance = new target(...dependencies);
       console.log(target);
