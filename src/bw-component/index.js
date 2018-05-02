@@ -1,11 +1,7 @@
 export function component(options) {
   return function(target, key, descriptor) {
-      console.log(target);
-      console.log(key);
-      console.log(descriptor);
-
     target.__renderable__ = { ...options };
-            console.log('adding...' + target);
+    console.log('adding...' + target);
 
     HtmlComponent.list.push({
         target: target,
