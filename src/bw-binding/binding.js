@@ -1,5 +1,3 @@
-import { TemplateCompiler } from 'bw-templating';
-
 export class BindingCollection {
   constructor() {
     this.bindings = [];
@@ -12,7 +10,12 @@ export class BindingCollection {
     let binding = this.bindings.filter(i => i.expression.text === expression.text && i.context === context)
     return binding.length > 0 ? binding[0] : false;
   }
+  filterByContext(context) {
+    let binding = this.bindings.filter(i => i.context === context);
+    return binding.length > 0 ? binding[0] : false;
+  }
 }
+
 export class BindingObserver {
   constructor(element, attribute) {
     this.element = element;
@@ -51,12 +54,3 @@ export class BindingContext {
   }
 }
 
-export class BindingService {
-  constructor(templateCompiler) {
-    this.bindings = new BindingCollection();
-    this.templateCompiler = templateCompiler;
-  }
-  bindView(context, view) {
-    this.templateCompiler.processNode(context, view)
-  }
-}
