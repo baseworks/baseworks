@@ -1,9 +1,7 @@
 import { WebpackLoader } from 'bw-webpack-loader'
 import { Loader } from 'bw-loader'
 import { Router } from 'bw-client-router'
-import {TemplateCompiler} from "bw-templating";
-import {Container} from "bw-dependency-injection";
-import { BindingService } from 'bw-binding';
+import { Container } from "bw-dependency-injection";
 
 class Bootstrapper {
   constructor() {
@@ -44,18 +42,15 @@ export class Main {
     this.container = new Container();
     this.container.registerAlias(Loader, WebpackLoader);
     this.element = document.querySelectorAll('body')[0];
-    this.templateCompiler = this.container.resolve(TemplateCompiler);
-
     this.loader = this.container.resolve(Loader);
-    this.router = new Router(this.loader, this.templateCompiler, this.element);
-    this.loader.router = this.router;
+    this.router = this.container.resolve(Router);
+    this.router.setElement(this.element);
     this.createView(); // should the router just navigate to '/' instead?
   }
 
   createView() {
     this.loader.load("index")
     .then(content => {
-      console.log(content);
       this.element.innerHTML = "";
       let template = document.createElement('div')
       template.innerHTML = content.view;
