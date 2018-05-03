@@ -36,6 +36,7 @@ export class Router extends BaseRouter {
 
   navigate(url, pushState = true) {
     this.isRouting = true;
+    console.log(url);
     let {params, route} = this.findRoute(url.split("?")[0])
      if (url === '/') {
        let target = this.element.querySelectorAll("view[router]")[0];
@@ -51,6 +52,10 @@ export class Router extends BaseRouter {
       .then(content => {
         let index = this.loader.modules.findIndex(i => i.moduleId === route.parent)
         let element = document.querySelectorAll("view[router]")[index];
+        if ('loadRouter' in content.viewModel) {
+          console.log('loading routes')
+          this.load(content.moduleId, content.viewModel.loadRouter())
+        }
         if (content.view && element) {
           let view = this.bindView(content)
           this.switchView(element, view)

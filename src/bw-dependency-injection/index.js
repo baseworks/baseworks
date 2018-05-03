@@ -26,7 +26,6 @@ export class Container {
 
     if (!instance) {
       instance = new target(...dependencies);
-      console.log(target);
       this.registry.set(target, instance)
     }
     return instance;

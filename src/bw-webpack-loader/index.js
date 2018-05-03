@@ -1,7 +1,10 @@
+import {Router} from 'bw-client-router';
+import {depend} from 'bw-dependency-injection';
+
 export class WebpackLoader {
   constructor() {
     this.modules = [];
-      window.webpack = __webpack_require__;
+    window.webpack = __webpack_require__;
   }
 
   findView(component) {
@@ -40,9 +43,7 @@ export class WebpackLoader {
             let item = new module[key]();
             let id = this.modules.length;
             let content = {moduleId: moduleId, view: view, id: id, viewModel: item};
-            if ('loadRouter' in item && 'router' in this) {
-              this.router.load(moduleId, item.loadRouter())
-            }
+
             this.modules.push(content);
             console.debug("Loaded module: " + moduleId + ".js" + (content.view ? " and " + moduleId + ".html" : ""));
 

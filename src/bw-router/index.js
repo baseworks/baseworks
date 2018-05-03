@@ -5,11 +5,13 @@ export class BaseRouter {
   }
 
   load(moduleId, routes) {
+    console.log('ok')
     for (let route of routes) {
       this.analyzePattern(route)
       route.parent = moduleId;
       this.routes.push(route);
     }
+    console.log(this.routes);
   }
 
   analyzePattern(route) {

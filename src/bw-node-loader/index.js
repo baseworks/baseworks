@@ -7,7 +7,7 @@ export class NodeLoader {
     this.modules = []
   }
   findView() {
-    return null;
+    return Promise.resolve(null);
   }
   load({path, loadViewModal = false, fragment = true}) {
     let file = path + ".html";

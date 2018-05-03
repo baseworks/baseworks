@@ -51,6 +51,10 @@ export class Main {
   createView() {
     this.loader.load("index")
     .then(content => {
+      if ('loadRouter' in content.viewModel) {
+        console.log('loading routes')
+        this.router.load(content.moduleId, content.viewModel.loadRouter())
+      }
       this.element.innerHTML = "";
       let template = document.createElement('div')
       template.innerHTML = content.view;
