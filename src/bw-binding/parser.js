@@ -279,34 +279,14 @@ export class ObjectLiteral {
 export class Identifier {
   constructor(value) {
     this.value = value;
-    this._value;
   }
 
   evaluate(context) {
     return context[this.value];
   }
 
-  observe(binding, context) {
-    this.context = context;
-    this._value = this.evaluate(context);
-    let decorator = {}
-    this.binding = binding;
-    decorator.get = () => {
-      return this._value
-    }
-    decorator.set = (newValue) => {
-      this._value = newValue;
-      binding.update(newValue);
-    }
-    Reflect.defineProperty(context, this.value, decorator);
-  }
-
-  assign(value) {
-    this.context[this.value] = value;
-    this.binding.update(value);
-  }
-
 }
+
 export class ConditionalExpression {
   constructor(expr, truthy, falsey) {
     this.expr = expr;

@@ -23,6 +23,11 @@ export class TemplateCompiler {
     }
 
     processNode(context, node) {
+        const component = HtmlComponent.list.find(i => i.name.toUpperCase() === node.tagName);
+        if (component) {
+           this.loader.findView(component)
+               .then(content => this.compileComponent(context, node, content));
+        }
         if (node.nodeType === 3) {
             if (node.textContent.length > 3) {
                 let parts = node.textContent.split("${");
@@ -86,7 +91,7 @@ export class TemplateCompiler {
 
                     binding.addObserver(new BindingObserver(node, attr));
                     if (attr === "value" || attr === "textContent")
-                        node[attr] = binding.evaluate(context);
+                        node[attr] = binding.evaluate();
                     else
                         node.setAttribute(attr, binding.evaluate(context));
 
@@ -100,12 +105,7 @@ export class TemplateCompiler {
                 }
             }
         }
-        const component = HtmlComponent.list.find(i => i.name.toUpperCase() === node.tagName);
-        if (component) {
-           this.loader.findView(component)
-               .then(content => this.compileComponent(context, node, content));
-
-        } else if (node.hasChildNodes()) {
+        if (node.hasChildNodes()) {
             for (let n of node.childNodes) {
                 this.processNode(context, n)
             }

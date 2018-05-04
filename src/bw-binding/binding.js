@@ -1,5 +1,8 @@
+import { Identifier } from "./parser";
+
 export class BindingCollection {
   constructor() {
+    console.log(this)
     this.bindings = [];
   }
   add(binding) {
@@ -17,29 +20,62 @@ export class BindingCollection {
 }
 
 export class BindingObserver {
-  constructor(element, attribute) {
-    this.element = element;
-    this.attribute = attribute;
+  constructor(context, value) {
+    this.context = context;
+    this.value = value;
   }
   update(newValue) {
-    this.element[this.attribute] = newValue;
+    this.context[this.value] = newValue;
     //if (this.attribute === "textContent" || this.attribute === "value")
     //else
       //this.element.setAttribute(this.attribute, newValue);
   }
+
 }
+/*
+  observe(binding, context) {
+    this.context = context;
+    this._value = this.evaluate(context);
+    let decorator = {};
+    this.binding = binding;
+    decorator.get = () => {
+      return this._value
+    };
+    decorator.set = (newValue) => {
+      this._value = newValue;
+      binding.update(newValue);
+    };
+    Reflect.defineProperty(context, this.value, decorator);
+  }
+
+  assign(value) {
+    console.log('broken:' + value);
+    console.log('setting :' + this.context[this.value]);
+    this.context[this.value] = value;
+    this.binding.update(value);
+  }*/
 
 export class BindingContext {
   constructor(expression, context) {
     this.expression = expression;
-    this.observers = []
     this.context = context;
-    if ('observe' in this.expression)
-      this.expression.observe(this, this.context);
+    this.observers = [];
+    this._value = this.evaluate(this.context);
+    if (expression instanceof Identifier) {
+      const decorator = {
+        get: () => this._value,
+        set: (value) => {
+            this.assign(value)
+        }
+      };
+      Reflect.defineProperty(this.context, expression.value, decorator);
+    }
   }
+
   assign(value) {
-    if ('assign' in this.expression)
-      this.expression.assign(value)
+    this._value = value;
+    this.observers.forEach(observer => observer.update(value));
+    return this._value;
   }
   evaluate() {
     return this.expression.evaluate(this.context);
