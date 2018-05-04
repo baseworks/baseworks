@@ -11,13 +11,14 @@ export class BindingCollection {
     }
 
     find(expression, context) {
-        let binding = this.bindings.filter(i => i.expression.text === expression.text && i.context === context);
+        let binding = this.bindings.filter(i => i.expression.value === expression.value && i.context === context);
+        console.log(binding);
         return binding.length > 0 ? binding[0] : false;
     }
 
     filterByContext(context) {
-        let binding = this.bindings.filter(i => i.context === context);
-        return binding.length > 0 ? binding[0] : false;
+        let bindings = this.bindings.filter(i => i.context === context);
+        return binding.length > 0 ? bindings : false;
     }
 }
 
