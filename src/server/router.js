@@ -1,7 +1,7 @@
-import { BaseRouter } from 'bw-router';
+import {BaseRouter} from 'bw-router';
 
 export class Router extends BaseRouter {
-  constructor() {
-    super();
-  }
+    constructor() {
+        super();
+    }
 }

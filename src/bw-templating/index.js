@@ -1,1 +1,1 @@
-export { TemplateCompiler } from './template-compiler'
+export {TemplateCompiler} from './template-compiler'

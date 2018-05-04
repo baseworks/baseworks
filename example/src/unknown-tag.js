@@ -1,4 +1,4 @@
-import { component } from 'bw-component';
+import {component} from 'bw-component';
 
 @component()
 export class UnknownTag {

@@ -11,6 +11,7 @@ export class TemplateCompiler {
         this.bindings = bindingCollection;
         this.loader = loader;
     }
+
     compileComponent(context, node, content) {
         let template = document.createElement('div');
         template.innerHTML = content.view;
@@ -25,13 +26,12 @@ export class TemplateCompiler {
     processNode(context, node) {
         const component = HtmlComponent.list.find(i => i.name.toUpperCase() === node.tagName);
         if (component) {
-           this.loader.findView(component)
-               .then(content => this.compileComponent(context, node, content));
+            this.loader.findView(component)
+                .then(content => this.compileComponent(context, node, content));
         }
         if (node.nodeType === 3) {
             if (node.textContent.length > 3) {
                 let parts = node.textContent.split("${");
-                let results = [];
                 for (let i = 1; i < parts.length; i++) {
                     let curly = 1;
                     let text = parts[i];
